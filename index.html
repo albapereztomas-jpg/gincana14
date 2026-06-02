@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SISTEMA RECON | ANIVERSARI 14</title>
+    <title>PROTOCOL 14 | ANIVERSARI 14</title>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         :root {
@@ -452,6 +452,16 @@
             0% { text-shadow: 0 0 5px var(--cyber-green); transform: scale(1); }
             100% { text-shadow: 0 0 15px var(--cyber-green), 2px 0 0 var(--cyber-red); transform: scale(1.02); }
         }
+
+        /* 🌟 ANIMACIONES PARA LA HUELLA DIGITAL 🌟 */
+        @keyframes pulseHuella {
+            0% { transform: scale(1); box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1); }
+            100% { transform: scale(1.08); box-shadow: 0 0 28px rgba(16, 185, 129, 0.8); background: rgba(16, 185, 129, 0.3); }
+        }
+        @keyframes pulseTextHuella {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -461,25 +471,33 @@
         <div class="victory-title">MISSIÓ COMPLETA</div>
         <div class="victory-subtitle">🏆 FELICITATS PELS 14 ANYS! 🏆</div>
         <div class="victory-desc">
-            Has superat amb èxit tots els protocols de seguretat d'aquest sistema RECON. Tots els objectius ocults han estat descoberts i desvelats correctament. El teu regal gran t'espera! Que pases un dia increïble! 🎉
+            Has superat amb èxit tots els protocols de seguretat d'aquest PROTOCOL 14. Tots els objectius ocults han estat descoberts i desvelats correctament. El teu regal gran t'espera! Que pases un dia increïble! 🎉
         </div>
     </div>
 </div>
 
-<!-- 🌟 PANTALLA DE BIENVENIDA 🌟 -->
 <div class="container" id="welcome-screen">
-    <h1 style="font-size: 2.2rem; margin-bottom: 10px;">SISTEMA RECON</h1>
+    <h1 style="font-size: 2.2rem; margin-bottom: 10px;">PROTOCOL 14</h1>
     <div style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px; text-align: center; line-height: 1.5;">
         Protocol de seguretat activat.<br><br>Benvingut a la teua missió d'aniversari.
     </div>
     <button class="btn-camera-hud" onclick="iniciarJoc()" style="padding: 20px; font-size: 1.2rem; margin-bottom: 0;">INICIAR SISTEMA</button>
 </div>
 
-<!-- 🌟 TU JUEGO COMPLETO (INICIA OCULTO) 🌟 -->
 <div class="container" id="main-panel" style="display: none;">
     <div class="cyber-alert-screen" id="hacker-alert">
         <div class="alert-title">🟢 NIVELL SUPERAT 🟢</div>
-        <div class="alert-subtitle">CARGANT DADES DEL PROPER NIVELL<br>DESBLOQUEJANT NOVA MISSIÓ...</div>
+        <div class="alert-subtitle">DESBLOQUEJANT PROPERA MISSIÓ...</div>
+        
+        <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%;">
+            <button onclick="confirmarAvanceHuella()" style="background: rgba(16, 185, 129, 0.1); border: 2px solid var(--cyber-green); color: var(--cyber-green); border-radius: 50%; width: 80px; height: 80px; font-size: 32px; cursor: pointer; display: flex; justify-content: center; align-items: center; outline: none; animation: pulseHuella 1.5s infinite alternate; transition: all 0.2s;">
+                ☝️
+            </button>
+            <div style="font-family: monospace; font-size: 0.75rem; color: var(--cyber-green); letter-spacing: 1px; text-transform: uppercase; font-weight: bold; line-height: 1.4; animation: pulseTextHuella 1s infinite alternate; text-align: center;">
+                AUTENTICACIÓ BIOMÈTRICA REQUERIDA<br>
+                <span style="color: var(--text-muted); font-size: 0.65rem; font-weight: normal;">(PREMSA LA HUELLA PER A REVELAR DADES)</span>
+            </div>
+        </div>
     </div>
 
     <div class="progress-bar">
@@ -500,7 +518,7 @@
     </div>
 
     <div class="hint-container">
-        <button id="hint-btn-trigger" class="btn-hint-trigger" onclick="revelarAjudaEncriptada()">⚡ SOL·LICITAR AJUDA RECON</button>
+        <button id="hint-btn-trigger" class="btn-hint-trigger" onclick="revelarAjudaEncriptada()">⚡ SOL·LICITAR AJUDA PROTOCOL 14</button>
         <div id="hint-text-box" class="hint-text-box"></div>
     </div>
 
@@ -533,6 +551,7 @@
     let html5QrCode = null;
     let currentPistaId = null;
     let typingInterval = null;
+    let pistaPendienteId = null; // Variable global para guardar el nivel desbloqueado
 
     // 🌟 FUNCIÓN NUEVA PARA EMPEZAR EL JUEGO 🌟
     function iniciarJoc() {
@@ -577,42 +596,42 @@
         1: { 
             titol: "NIVELL 01: START", 
             text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?",
-            ajuda: "📡 RECON HINT: Està a la cuina, prop de la llet i els iogurts." 
+            ajuda: "📡 PISTA PROTOCOL 14: Està a la cuina, prop de la llet i els iogurts." 
         },
         2: { 
             titol: "NIVELL 02: LAB", 
             text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra.",
-            ajuda: "📡 RECON HINT: Busca en un arbre que té fruites grans i creix prop de la tanca." 
+            ajuda: "📡 PISTA PROTOCOL 14: Busca en un arbre que té fruites grans i creix prop de la tanca." 
         },
         3: { 
             titol: "NIVELL 03: AVANPOST", 
-            text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral.",
-            ajuda: "📡 RECON HINT: Revisa molt prop del tancat on viuen o vivien les gallines." 
+            text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques ALU s'ubica molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral.",
+            ajuda: "📡 PISTA PROTOCOL 14: Revisa molt prop del tancat on viuen o vivien les gallines." 
         },
         4: { 
             titol: "NIVELL 04: REFRIGERACIÓ", 
-            text: "Ja la tens. Ara busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, pero està darrere de la seua esquena, on ningú es mira mentre es banya.",
-            ajuda: "📡 RECON HINT: Revisa la part de darrere de la dutxa exterior de la piscina." 
+            text: "Ja la tens. Ahora busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, pero està darrere de la seua esquena, on ningú es mira mentre es banya.",
+            ajuda: "📡 PISTA PROTOCOL 14: Revisa la part de darrere de la dutxa exterior de la piscina." 
         },
         5: { 
             titol: "NIVELL 05: PORTAL", 
             text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa.",
-            ajuda: "📡 RECON HINT: ÉS la porta gran de ferro exterior per on entren els cotxes." 
+            ajuda: "📡 PISTA PROTOCOL 14: ÉS la porta gran de ferro exterior per on entren els cotxes." 
         },
         6: { 
             titol: "NIVELL 06: BOTÀNICA", 
             text: "Ja la tens. Anem a pel Regal 3. Torna a mirar cap a terra. Busca entre les brosses del peu de la reixa on creix eixa planta com una enfiladissa amb punxes, la que et taca els dits de tinta fosca quan agafes el seu fruit a l'estiu.",
-            ajuda: "📡 RECON HINT: Busca baix de tot de la reixa exterior on creix la morera." 
+            ajuda: "📡 PISTA PROTOCOL 14: Busca baix de tot de la reixa exterior on creix la morera." 
         },
         7: { 
             titol: "NIVELL 07: LOGÍSTICA", 
             text: "Regal 3 aconseguit. Queda poc. Dirigix-te al lloc on es fa la màgia dels diumenges amb foc, llenya i arròs. Entra al seu quartet i alça el que s'usa per a apagar la set.",
-            ajuda: "📡 RECON HINT: Entra al quartet de les paelles i alça els botons o l'entorn del termo/butà." 
+            ajuda: "📡 PISTA PROTOCOL 14: Entra al quartet de les paelles i alça els botons o l'entorn del termo/butà." 
         },
         8: { 
             titol: "NIVELL 08: ENDGAME", 
             text: "Has arribat al final. El premi gran t'espera. El quart regal està en l'habitació on es guarden els remeis per a les coses trencades. Entra-hi, però esta vegada no busques en terra: el tresor mira a les teues sabates des del cel d'eixe quartet.",
-            ajuda: "📡 RECON HINT: Mira cap al sostre o les prestatgeries altes del traster de les ferramentes." 
+            ajuda: "📡 PISTA PROTOCOL 14: Mira cap al sostre o les prestatgeries altes del traster de les ferramentes." 
         }
     };
 
@@ -679,27 +698,36 @@
         }
     }
 
+    // 🌟 SE MODIFICA ESTA FUNCIÓN: YA NO TIENE TIEMPO AUTOMÁTICO 🌟
     function mostrarPista(id) {
-        currentPistaId = id;
-        const pista = gincana[id];
+        pistaPendienteId = id; // Guardamos el nivel desbloqueado en espera de la huella
+        apagarCamaraAutomatica();
+        document.getElementById('hint-text-box').style.display = 'none';
+
+        const alertScreen = document.getElementById('hacker-alert');
+        alertScreen.style.display = 'flex'; // Mostramos la pantalla verde fija
+        playSound('success');
+    }
+
+    // 🌟 FUNCIÓN NUEVA: EJECUTADA AL TOCAR LA HUELLA DIGITAL 🌟
+    function confirmarAvanceHuella() {
+        if (pistaPendienteId === null) return;
+        
+        playSound('success'); // Pitido de confirmación biométrica
+        const alertScreen = document.getElementById('hacker-alert');
+        alertScreen.style.display = 'none'; // Escondemos por fin la pantalla verde
+
+        const pista = gincana[pistaPendienteId];
         if (pista) {
-            apagarCamaraAutomatica();
-            document.getElementById('hint-text-box').style.display = 'none';
-
-            const alertScreen = document.getElementById('hacker-alert');
-            alertScreen.style.display = 'flex';
-            playSound('success');
-
-            setTimeout(() => {
-                alertScreen.style.display = 'none';
-                document.getElementById('pista-titol').innerText = pista.titol;
-                animarTextoTypewriter(pista.text, 'actual-text');
-                document.getElementById('error-text').style.display = 'none';
-                document.getElementById('hint-btn-trigger').style.display = 'inline-block';
-                actualitzarBarra(id);
-                gestionarBotonesVisibilidad();
-            }, 1200);
+            currentPistaId = pistaPendienteId;
+            document.getElementById('pista-titol').innerText = pista.titol;
+            animarTextoTypewriter(pista.text, 'actual-text');
+            document.getElementById('error-text').style.display = 'none';
+            document.getElementById('hint-btn-trigger').style.display = 'inline-block';
+            actualitzarBarra(pistaPendienteId);
+            gestionarBotonesVisibilidad();
         }
+        pistaPendienteId = null; // Reseteamos el estado pendiente
     }
 
     function activarVictoriaFinal() {
@@ -708,7 +736,6 @@
     }
 
     // 🌟 FUNCIÓN DE HASH ACTUALIZADA 🌟
-    // Esto asegura que si recarga la página a mitad, vuelve al juego automáticamente.
     function comprovarHash() {
         const hash = window.location.hash;
         if (hash.includes('pista')) {
