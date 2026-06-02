@@ -2,8 +2,9 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SISTEMA RECON | ANIVERSARI 14</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         :root {
             --bg-color: #030712;
@@ -22,13 +23,13 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 8px; /* Margen externo mínimo para estirar al máximo */
+            padding: 12px;
             overflow-x: hidden;
         }
 
@@ -36,162 +37,240 @@
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
-            background-size: 15px 15px;
+            background: linear-gradient(rgba(56, 189, 248, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(56, 189, 248, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
             z-index: -1;
         }
 
         .container {
             background: var(--panel-bg);
             border: 2px solid var(--dark-blue);
-            box-shadow: 0 0 25px rgba(29, 78, 216, 0.3), inset 0 0 15px rgba(56, 189, 248, 0.05);
-            border-radius: 16px;
-            padding: 35px 22px; /* Más espacio interno arriba y abajo */
-            max-width: 440px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(29, 78, 216, 0.25);
+            border-radius: 20px;
+            padding: 24px 20px;
+            max-width: 420px;
             width: 100%;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
             position: relative;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .container::before {
-            content: "SYSTEM ONLINE | AUDIO CONNECTED";
+            content: "SYSTEM ONLINE | HUD V2.5";
             position: absolute;
             top: -10px;
-            left: 15px;
+            left: 20px;
             background: var(--bg-color);
-            padding: 0 8px;
-            font-size: 0.65rem;
+            padding: 0 10px;
+            font-size: 0.6rem;
             color: var(--neon-blue);
             font-family: monospace;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             border: 1px solid var(--dark-blue);
+            border-radius: 4px;
         }
 
         .progress-bar {
             display: flex;
             justify-content: space-between;
             gap: 5px;
-            margin-bottom: 25px; /* Más separación con el título */
+            margin-bottom: 20px;
         }
 
         .progress-step {
-            height: 10px; /* Barra de progreso ligeramente más alta */
+            height: 8px;
             flex-grow: 1;
-            background-color: rgba(56, 189, 248, 0.1);
+            background-color: rgba(56, 189, 248, 0.08);
             border: 1px solid rgba(29, 78, 216, 0.2);
-            border-radius: 2px;
+            border-radius: 3px;
             transition: all 0.4s ease;
         }
 
         .progress-step.active {
             background-color: var(--neon-blue);
-            box-shadow: 0 0 8px var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
             border-color: var(--neon-blue);
         }
 
         h1 {
             color: var(--neon-blue);
-            font-size: clamp(1.4rem, 6vw, 1.8rem); /* Título más grande y visible */
+            font-size: clamp(1.3rem, 5.5vw, 1.5rem);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin: 0 0 25px 0;
-            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-            line-height: 1.2;
+            margin: 0 0 16px 0;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+            text-align: center;
         }
 
         .pista-box {
-            background-color: rgba(3, 7, 18, 0.6);
-            border: 1px solid rgba(56, 189, 248, 0.15);
-            border-left: 5px solid var(--neon-blue);
-            padding: 24px 18px; /* Más aire dentro de la caja de texto */
+            background-color: rgba(3, 7, 18, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.12);
+            border-left: 4px solid var(--neon-blue);
+            padding: 18px 16px;
             text-align: left;
-            border-radius: 8px;
-            font-size: clamp(1.1rem, 4.5vw, 1.25rem); /* Letra del acertijo bastante más grande */
-            line-height: 1.6;
-            margin-bottom: 25px;
-            min-height: 110px;
+            border-radius: 10px;
+            font-size: clamp(1.05rem, 4.2vw, 1.15rem);
+            line-height: 1.55;
+            margin-bottom: 20px;
         }
 
+        /* SECCIÓN DEL VISOR DE LA CÁMARA */
+        .scanner-section {
+            background-color: #030712;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+            border-radius: 14px;
+            padding: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        #reader {
+            width: 100% !important;
+            border: none !important;
+            background: transparent !important;
+        }
+
+        /* Ocultamos por completo la interfaz interna fea generada por defecto */
+        #reader img { display: none !important; }
+        #reader header, #reader footer { display: none !important; }
+        #reader__dashboard_section_csr span { display: none !important; }
+        #reader__dashboard_section_swaplink { display: none !important; }
+        #reader__dashboard_section_scanmode { display: none !important; }
+        
+        /* Forzamos a ocultar el botón feo nativo que a veces no sale */
+        #reader button { display: none !important; }
+
+        #reader__camera_selection {
+            width: 100%;
+            background: #0b1329;
+            color: var(--neon-blue);
+            border: 1px solid var(--dark-blue);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        #reader video {
+            border-radius: 10px !important;
+            object-fit: cover !important;
+            max-height: 240px;
+            width: 100% !important;
+        }
+
+        /* NUESTRO BOTÓN DE CÁMARA PERSONALIZADO HUD */
+        .btn-camera-hud {
+            background: linear-gradient(135deg, var(--dark-blue), #1e40af);
+            color: white;
+            border: 1px solid var(--neon-blue);
+            padding: 15px 20px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .btn-camera-hud:active {
+            transform: scale(0.98);
+            background: var(--neon-blue);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        /* SECCIÓN INFERIOR: ENTRADA MANUAL */
         .manual-input {
-            margin-top: 25px;
             display: flex;
             gap: 12px;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             width: 100%;
+            border-top: 1px dashed rgba(56, 189, 248, 0.15);
+            padding-top: 18px;
         }
 
         .input-group {
             display: flex;
             gap: 10px;
             width: 100%;
-            max-width: 340px;
         }
 
         input {
             background: #030712;
             border: 1px solid var(--dark-blue);
             color: var(--neon-blue);
-            padding: 16px; /* Caja de texto más alta */
-            border-radius: 8px;
-            width: 100px;
+            padding: 15px;
+            border-radius: 10px;
+            width: 95px;
             text-align: center;
-            font-size: 1.3rem; /* Números del PIN más grandes */
             font-weight: bold;
             font-family: monospace;
             outline: none;
-            transition: border 0.3s;
+            transition: all 0.3s;
             letter-spacing: 1px;
-            font-size: 18px; /* Asegura un tamaño cómodo en pantallas táctiles */
+            font-size: 18px;
         }
 
         input:focus {
             border-color: var(--neon-blue);
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
         }
 
-        button {
-            background: linear-gradient(135deg, var(--dark-blue), #1e40af);
-            color: white;
-            border: 1px solid var(--neon-blue);
-            padding: 16px 20px; /* Botón con más cuerpo */
-            border-radius: 8px;
+        .btn-manual {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-muted);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 1rem; /* Texto del botón más grande */
+            font-size: 0.9rem;
             transition: all 0.3s;
             flex-grow: 1;
-            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.2);
         }
 
-        button:hover, button:active {
-            background: var(--neon-blue);
-            color: var(--bg-color);
-            box-shadow: 0 0 12px var(--neon-blue);
+        .btn-manual:active {
+            background: var(--dark-blue);
+            color: white;
         }
 
         .error-msg {
             color: #ef4444;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
-            margin-top: 6px;
-            display: none;
+            margin-top: 4px;
             font-family: monospace;
+            display: none;
         }
 
         .footer-tech {
-            font-size: 0.7rem;
-            color: rgba(148, 163, 184, 0.25);
-            margin-top: 30px;
+            font-size: 0.6rem;
+            color: rgba(148, 163, 184, 0.2);
+            margin-top: 20px;
             text-transform: uppercase;
             font-family: monospace;
             letter-spacing: 0.5px;
+            text-align: center;
         }
     </style>
 </head>
@@ -212,60 +291,58 @@
     <h1 id="pista-titol">SISTEMA INICIALITZAT</h1>
     
     <div class="pista-box" id="pista-text">
-        Benvingut a la teua missió de 14 aniversari. El sistema s'ha sincronitzat correctament. Escaneja el següent QR o introdueix el PIN de 4 xifres de la teua targeta per a desvelar els objectius.
+        Benvingut a la teua missió de 14 aniversari. Inicia el lector inferior per escanejar els QR o utilitza el codi manual.
+    </div>
+
+    <div class="scanner-section">
+        <div id="reader"></div>
+        <button id="custom-camera-btn" class="btn-camera-hud" onclick="encenderCamaraNativa()">Activar Escàner QR</button>
     </div>
 
     <div class="manual-input">
         <div class="input-group">
             <input type="text" id="pista-num" placeholder="PIN" maxlength="4" inputmode="numeric" pattern="[0-9]*">
-            <button onclick="carregarPistaManual()">Desbloquejar</button>
+            <button class="btn-manual" onclick="carregarPistaManual()">Validar</button>
         </div>
         <div class="error-msg" id="error-text">❌ CODI PIN INCORRECTE</div>
     </div>
     
-    <div class="footer-tech">ANTENNA: DISCONNECTED | SECURE LOCAL DATA</div>
+    <div class="footer-tech">ANTENNA: READY | CAM STREAM CONNECTED</div>
 </div>
 
 <script>
     let audioCtx = null;
+    let html5QrCode = null;
 
     function playSound(type) {
         try {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
-            
             if (type === 'success') {
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.type = 'sine'; gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                 osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-                
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
                 setTimeout(() => {
                     let osc2 = audioCtx.createOscillator();
                     let gain2 = audioCtx.createGain();
                     osc2.connect(gain2); gain2.connect(audioCtx.destination);
                     osc2.type = 'sine'; gain2.gain.setValueAtTime(0.1, audioCtx.currentTime);
                     osc2.frequency.setValueAtTime(880, audioCtx.currentTime);
-                    osc2.start();
-                    osc2.stop(audioCtx.currentTime + 0.15);
+                    osc2.start(); osc2.stop(audioCtx.currentTime + 0.15);
                 }, 100);
-
             } else if (type === 'error') {
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.type = 'sawtooth'; gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
                 osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.25);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
             }
-        } catch(e) {
-            console.log("Audio no soportado");
-        }
+        } catch(e) { console.log("Audio no soportado"); }
     }
 
     const pins = {
@@ -276,7 +353,7 @@
     const gincana = {
         1: { titol: "MISSIÓ 01: START", text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?" },
         2: { titol: "MISSIÓ 02: LAB", text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra." },
-        3: { titol: "MISSIÓ 03: AVANPOST", text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques carat està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral." },
+        3: { titol: "MISSIÓ 03: AVANPOST", text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral." },
         4: { titol: "MISSIÓ 04: REFRIGERACIÓ", text: "Ja la tens. Ara busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, pero està darrere de la seua esquena, on ningú es mira mentre es banya." },
         5: { titol: "MISSIÓ 05: PORTAL", text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa." },
         6: { titol: "MISSIÓ 06: BOTÀNICA", text: "Ja la tens. Anem a pel Regal 3. Torna a mirar cap a terra. Busca entre les brosses del peu de la reixa on creix eixa planta com una enfiladissa amb punxes, la que et taca els dits de tinta fosca quan agafes el seu fruit a l'estiu." },
@@ -287,11 +364,7 @@
     function actualitzarBarra(id) {
         for (let i = 1; i <= 8; i++) {
             const step = document.getElementById('step-' + i);
-            if (i <= id) {
-                step.classList.add('active');
-            } else {
-                step.classList.remove('active');
-            }
+            if (i <= id) { step.classList.add('active'); } else { step.classList.remove('active'); }
         }
     }
 
@@ -307,10 +380,10 @@
             
             const panel = document.getElementById('main-panel');
             panel.style.transform = "scale(0.98)";
-            panel.style.boxShadow = "0 0 40px var(--neon-blue)";
+            panel.style.boxShadow = "0 0 35px var(--neon-blue)";
             setTimeout(() => {
                 panel.style.transform = "scale(1)";
-                panel.style.boxShadow = "0 0 25px rgba(29, 78, 216, 0.3)";
+                panel.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(29, 78, 216, 0.25)";
             }, 200);
         }
     }
@@ -319,7 +392,7 @@
         const hash = window.location.hash;
         if (hash.includes('pista')) {
             const num = hash.replace('#pista', '');
-            mostrarPista(num);
+            mostrarPista(parseInt(num));
         }
     }
 
@@ -335,6 +408,40 @@
             document.getElementById('error-text').style.display = 'block';
             playSound('error');
         }
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if (decodedText.includes('#pista')) {
+            const partes = decodedText.split('#pista');
+            const numPista = parseInt(partes[partes.length - 1]);
+            
+            if (gincana[numPista]) {
+                window.location.hash = 'pista' + numPista;
+                mostrarPista(numPista);
+            }
+        }
+    }
+
+    // NUEVA FUNCIÓN FORZADA PARA INICIAR LA CÁMARA
+    function encenderCamaraNativa() {
+        // Inicializamos el lector directamente sobre el objeto 'reader'
+        html5QrCode = new Html5Qrcode("reader");
+        
+        const config = { 
+            fps: 20, 
+            qrbox: { width: 220, height: 220 }
+        };
+
+        // Forzamos el uso de la cámara trasera ('environment')
+        html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+        .then(() => {
+            // Si tiene éxito, ocultamos nuestro botón de inicio para dejar ver el vídeo completo
+            document.getElementById('custom-camera-btn').style.display = 'none';
+        })
+        .catch((err) => {
+            alert("⚠️ Error de permisos: Assegura't de carregar la web amb HTTPS (en GitHub Pages) i acceptar el permís de càmera en el teu mòbil.");
+            console.error(err);
+        });
     }
 
     window.addEventListener('hashchange', comprovarHash);
