@@ -168,24 +168,38 @@
     </div>
 
     <div class="manual-input">
-        <input type="number" id="pista-num" placeholder="Nº" min="1" max="8">
-        <button onclick="carregarPistaManual()">Desbloquejar</button>
+        <div class="input-group">
+            <input type="text" id="pista-num" placeholder="PIN" maxlength="4">
+            <button onclick="carregarPistaManual()">Desbloquejar</button>
+        </div>
+        <div class="error-msg" id="error-text">❌ CODI PIN INCORRECTE</div>
     </div>
     
     <div class="footer-tech">ANTENNA: DISCONNECTED // SECURE_LOCAL_DATA</div>
 </div>
 
 <script>
+    // Mapeo de códigos PIN de 4 dígitos a cada pista
+    const pins = {
+        "4821": 2,
+        "7395": 3,
+        "1064": 4,
+        "8513": 5,
+        "2947": 6,
+        "6152": 7,
+        "9308": 8
+    };
+
     const gincana = {
         1: {
             titol: "MISSIÓ 01 // START",
-            sub: "Sector: Sector Intern",
+            sub: "Sector: Àrea Interior",
             text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?"
         },
         2: {
             titol: "MISSIÓ 02 // LAB",
             sub: "Sector: Àrea Exterior",
-            text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra."
+            text: "Molt bé. Anem a pel Regal 1. Ix al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra."
         },
         3: {
             titol: "MISSIÓ 03 // AVANPOST",
@@ -225,6 +239,7 @@
             document.getElementById('pista-titol').innerText = pista.titol;
             document.getElementById('pista-sub').innerText = pista.sub;
             document.getElementById('pista-text').innerText = pista.text;
+            document.getElementById('error-text').style.display = 'none';
             
             const panel = document.getElementById('main-panel');
             panel.style.transform = "scale(0.98)";
@@ -245,11 +260,15 @@
     }
 
     function carregarPistaManual() {
-        const num = document.getElementById('pista-num').value;
-        if (gincana[num]) {
-            window.location.hash = 'pista' + num;
-            mostrarPista(num);
+        const pinIntroducido = document.getElementById('pista-num').value.trim();
+        const numPista = pins[pinIntroducido];
+
+        if (numPista) {
+            window.location.hash = 'pista' + numPista;
+            mostrarPista(numPista);
             document.getElementById('pista-num').value = '';
+        } else {
+            document.getElementById('error-text').style.display = 'block';
         }
     }
 
