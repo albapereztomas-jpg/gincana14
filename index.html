@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         :root {
-            --bg-color: #030712;
+            --bg-color: #020617;
             --panel-bg: #0b1329;
             --neon-blue: #38bdf8;
             --dark-blue: #1d4ed8;
@@ -40,8 +40,8 @@
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(56, 189, 248, 0.02) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(56, 189, 248, 0.02) 1px, transparent 1px);
+            background: linear-gradient(rgba(56, 189, 248, 0.01) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(56, 189, 248, 0.01) 1px, transparent 1px);
             background-size: 20px 20px;
             z-index: -1;
         }
@@ -49,7 +49,6 @@
         .container {
             background: var(--panel-bg);
             border: 2px solid var(--dark-blue);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(29, 78, 216, 0.25);
             border-radius: 20px;
             padding: 26px 20px;
             max-width: 420px;
@@ -58,24 +57,35 @@
             flex-direction: column;
             position: relative;
             transition: all 0.3s ease;
+            animation: rgbLights 6s linear infinite; 
+        }
+
+        @keyframes rgbLights {
+            0% { border-color: #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.3); }
+            33% { border-color: #a855f7; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.3); }
+            66% { border-color: #ec4899; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(236, 72, 153, 0.3); }
+            100% { border-color: #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.3); }
         }
 
         .container::before {
-            content: "SYSTEM ONLINE | CORE V4.5 PRO";
+            content: "JUGADOR: 01 | NIVELL: 14 | RPM: 7400 | NITRO: LLEST";
             position: absolute;
-            top: -10px;
-            left: 20px;
+            top: -11px;
+            left: 15px;
+            right: 15px;
             background: var(--bg-color);
-            padding: 0 10px;
-            font-size: 0.6rem;
+            padding: 2px 6px;
+            font-size: 0.58rem;
             color: var(--neon-blue);
             font-family: monospace;
-            letter-spacing: 1.5px;
-            border: 1px solid var(--dark-blue);
+            letter-spacing: 1px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 4px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
-        /* BARRA DE PROGRESO */
         .progress-bar {
             display: flex;
             justify-content: space-between;
@@ -110,7 +120,7 @@
         }
 
         .pista-box {
-            background-color: rgba(3, 7, 18, 0.5);
+            background-color: rgba(3, 7, 18, 0.6);
             border: 1px solid rgba(56, 189, 248, 0.12);
             border-left: 5px solid var(--neon-blue);
             padding: 24px 18px;
@@ -123,7 +133,6 @@
             min-height: 120px;
         }
 
-        /* PANTALLA HACKER AL CAMBIAR TARJETA */
         .cyber-alert-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -144,10 +153,10 @@
         .alert-title {
             color: var(--cyber-green);
             font-family: monospace;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 900;
             letter-spacing: 2px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             animation: pulse-border 0.3s infinite alternate;
         }
 
@@ -160,7 +169,6 @@
             opacity: 0.8;
         }
 
-        /* SISTEMA DE AYUDAS / HACKS INLINE */
         .hint-container {
             margin-bottom: 22px;
             text-align: left;
@@ -178,13 +186,11 @@
             letter-spacing: 1px;
             padding: 0;
             outline: none;
-            display: none; /* Se activa en JS */
+            display: none;
         }
 
-        .btn-hint-trigger:active { color: var(--cyber-gold); }
-
         .hint-text-box {
-            background-color: rgba(245, 158, 11, 0.05);
+            background-color: rgba(245, 158, 11, 0.04);
             border: 1px dashed rgba(245, 158, 11, 0.2);
             color: var(--cyber-gold);
             border-radius: 8px;
@@ -195,7 +201,6 @@
             display: none;
         }
 
-        /* SECCIÓN CÁMARA + VISOR TÁCTICO */
         .scanner-section {
             background-color: #030712;
             border: 2px solid rgba(56, 189, 248, 0.2);
@@ -263,7 +268,6 @@
             100% { top: 15px; }
         }
 
-        /* BOTONES PRINCIPALES */
         .btn-camera-hud {
             background: linear-gradient(135deg, var(--dark-blue), #1e40af);
             color: white;
@@ -281,7 +285,6 @@
             margin-bottom: 22px;
         }
 
-        /* BOTÓN DE VICTORIA DORADO */
         .btn-victory-claim {
             background: linear-gradient(135deg, #78350f, var(--cyber-gold));
             color: white;
@@ -306,7 +309,21 @@
             100% { transform: scale(1); box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
         }
 
-        /* ENTRADA MANUAL */
+        .btn-manual {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-muted);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            flex-grow: 1;
+        }
+
         .manual-input {
             display: flex;
             gap: 12px;
@@ -344,21 +361,6 @@
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
         }
 
-        .btn-manual {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: var(--text-muted);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 15px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            flex-grow: 1;
-        }
-
         .error-msg {
             color: #ef4444;
             font-size: 0.85rem;
@@ -368,7 +370,6 @@
             display: none;
         }
 
-        /* 🏆 PANTALLA DE VICTORIA FINAL PREMIUM */
         .cyber-victory-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -395,7 +396,7 @@
         }
 
         .victory-card::before {
-            content: "👑 ACCESS_GRANTED";
+            content: "👑 MISSIÓ_COMPLETADA";
             position: absolute;
             top: -12px; left: 50%;
             transform: translateX(-50%);
@@ -465,10 +466,20 @@
     </div>
 </div>
 
-<div class="container" id="main-panel">
+<!-- 🌟 PANTALLA DE BIENVENIDA 🌟 -->
+<div class="container" id="welcome-screen">
+    <h1 style="font-size: 2.2rem; margin-bottom: 10px;">SISTEMA RECON</h1>
+    <div style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px; text-align: center; line-height: 1.5;">
+        Protocol de seguretat activat.<br><br>Benvingut a la teua missió d'aniversari.
+    </div>
+    <button class="btn-camera-hud" onclick="iniciarJoc()" style="padding: 20px; font-size: 1.2rem; margin-bottom: 0;">INICIAR SISTEMA</button>
+</div>
+
+<!-- 🌟 TU JUEGO COMPLETO (INICIA OCULTO) 🌟 -->
+<div class="container" id="main-panel" style="display: none;">
     <div class="cyber-alert-screen" id="hacker-alert">
-        <div class="alert-title">⚠️ ENLLAÇ DETECTAT ⚠️</div>
-        <div class="alert-subtitle">SISTEMA RECON CONFIGURAT<br>DESBLOQUEJANT NOVA MISSIÓ...</div>
+        <div class="alert-title">🟢 NIVELL SUPERAT 🟢</div>
+        <div class="alert-subtitle">CARGANT DADES DEL PROPER NIVELL<br>DESBLOQUEJANT NOVA MISSIÓ...</div>
     </div>
 
     <div class="progress-bar">
@@ -482,7 +493,7 @@
         <div class="progress-step" id="step-8"></div>
     </div>
 
-    <h1 id="pista-titol">SISTEMA INICIALITZAT</h1>
+    <h1 id="pista-titol">PANTALLA INICIALITZADA</h1>
     
     <div class="pista-box" id="pista-text">
         <span id="actual-text">Benvingut a la teua missió de 14 aniversari. Inicia el lector inferior per escanejar els QR o utilitza el codi manual.</span>
@@ -493,9 +504,9 @@
         <div id="hint-text-box" class="hint-text-box"></div>
     </div>
 
-    <button id="custom-camera-btn" class="btn-camera-hud" onclick="controlarLectorCuerpo()">Activar Lector QR</button>
+    <button id="custom-camera-btn" class="btn-camera-hud" onclick="controlarLectorCuerpo()">Activar Radar QR</button>
 
-    <button id="victory-claim-btn" class="btn-victory-claim" onclick="activarVictoriaFinal()">🔓 RECOLLIR PREMI FINAL</button>
+    <button id="victory-claim-btn" class="btn-victory-claim" onclick="activarVictoriaFinal()">🔓 RECOLLIR RECOMPENSA FINAL</button>
 
     <div class="scanner-section" id="camera-box-area">
         <div id="reader"></div>
@@ -514,7 +525,7 @@
         <div class="error-msg" id="error-text">❌ CODI PIN INCORRECTE</div>
     </div>
     
-    <div class="footer-tech">ANTENNA: READY | HUD V4.5 MASTER</div>
+    <div class="footer-tech">ANTENNA: LLEST | TELEMETRIA DE CURSA ACTIVA</div>
 </div>
 
 <script>
@@ -522,6 +533,14 @@
     let html5QrCode = null;
     let currentPistaId = null;
     let typingInterval = null;
+
+    // 🌟 FUNCIÓN NUEVA PARA EMPEZAR EL JUEGO 🌟
+    function iniciarJoc() {
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('main-panel').style.display = 'flex';
+        window.location.hash = 'pista1';
+        mostrarPista(1);
+    }
 
     function playSound(type) {
         try {
@@ -556,42 +575,42 @@
 
     const gincana = {
         1: { 
-            titol: "MISSIÓ 01: START", 
+            titol: "NIVELL 01: START", 
             text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?",
             ajuda: "📡 RECON HINT: Està a la cuina, prop de la llet i els iogurts." 
         },
         2: { 
-            titol: "MISSIÓ 02: LAB", 
+            titol: "NIVELL 02: LAB", 
             text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra.",
             ajuda: "📡 RECON HINT: Busca en un arbre que té fruites grans i creix prop de la tanca." 
         },
         3: { 
-            titol: "MISSIÓ 03: AVANPOST", 
+            titol: "NIVELL 03: AVANPOST", 
             text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral.",
             ajuda: "📡 RECON HINT: Revisa molt prop del tancat on viuen o vivien les gallines." 
         },
         4: { 
-            titol: "MISSIÓ 04: REFRIGERACIÓ", 
+            titol: "NIVELL 04: REFRIGERACIÓ", 
             text: "Ja la tens. Ara busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, pero està darrere de la seua esquena, on ningú es mira mentre es banya.",
             ajuda: "📡 RECON HINT: Revisa la part de darrere de la dutxa exterior de la piscina." 
         },
         5: { 
-            titol: "MISSIÓ 05: PORTAL", 
+            titol: "NIVELL 05: PORTAL", 
             text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa.",
-            ajuda: "📡 RECON HINT: És la porta gran de ferro exterior per on entren els cotxes." 
+            ajuda: "📡 RECON HINT: ÉS la porta gran de ferro exterior per on entren els cotxes." 
         },
         6: { 
-            titol: "MISSIÓ 06: BOTÀNICA", 
+            titol: "NIVELL 06: BOTÀNICA", 
             text: "Ja la tens. Anem a pel Regal 3. Torna a mirar cap a terra. Busca entre les brosses del peu de la reixa on creix eixa planta com una enfiladissa amb punxes, la que et taca els dits de tinta fosca quan agafes el seu fruit a l'estiu.",
             ajuda: "📡 RECON HINT: Busca baix de tot de la reixa exterior on creix la morera." 
         },
         7: { 
-            titol: "MISSIÓ 07: LOGÍSTICA", 
+            titol: "NIVELL 07: LOGÍSTICA", 
             text: "Regal 3 aconseguit. Queda poc. Dirigix-te al lloc on es fa la màgia dels diumenges amb foc, llenya i arròs. Entra al seu quartet i alça el que s'usa per a apagar la set.",
             ajuda: "📡 RECON HINT: Entra al quartet de les paelles i alça els botons o l'entorn del termo/butà." 
         },
         8: { 
-            titol: "MISSIÓ 08: ENDGAME", 
+            titol: "NIVELL 08: ENDGAME", 
             text: "Has arribat al final. El premi gran t'espera. El quart regal està en l'habitació on es guarden els remeis per a les coses trencades. Entra-hi, però esta vegada no busques en terra: el tresor mira a les teues sabates des del cel d'eixe quartet.",
             ajuda: "📡 RECON HINT: Mira cap al sostre o les prestatgeries altes del traster de les ferramentes." 
         }
@@ -604,7 +623,6 @@
         }
     }
 
-    /* EFECTO TERMINAL: MÁQUINA DE ESCRIBIR */
     function animarTextoTypewriter(texto, elementoId) {
         clearInterval(typingInterval);
         const elemento = document.getElementById(elementoId);
@@ -617,7 +635,7 @@
             } else {
                 clearInterval(typingInterval);
             }
-        }, 20); // Velocidad de escritura fluida
+        }, 18);
     }
 
     function revelarAjudaEncriptada() {
@@ -629,12 +647,20 @@
     }
 
     function apagarCamaraAutomatica() {
-        if (html5QrCode && html5QrCode.isScanning()) {
-            html5QrCode.stop().then(() => {
+        try {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('camera-box-area').style.display = 'none';
+                    gestionarBotonesVisibilidad();
+                }).catch(err => {
+                    document.getElementById('camera-box-area').style.display = 'none';
+                    gestionarBotonesVisibilidad();
+                });
+            } else {
                 document.getElementById('camera-box-area').style.display = 'none';
                 gestionarBotonesVisibilidad();
-            }).catch(err => console.log("Error apagando cámara: ", err));
-        } else {
+            }
+        } catch(e) {
             document.getElementById('camera-box-area').style.display = 'none';
             gestionarBotonesVisibilidad();
         }
@@ -645,11 +671,11 @@
         const victoryBtn = document.getElementById('victory-claim-btn');
 
         if (currentPistaId === 8) {
-            mainBtn.style.display = 'none'; // Desaparece la cámara para siempre
-            victoryBtn.style.display = 'block'; // Aparece el botón dorado final
+            mainBtn.style.display = 'none';
+            victoryBtn.style.display = 'block';
         } else {
             mainBtn.style.display = 'block';
-            mainBtn.innerText = currentPistaId ? "Obrir escàner de propera missió" : "Activar Lector QR";
+            mainBtn.innerText = currentPistaId ? "OBRIR LECTOR PROPER LEVEL" : "ACTIVAR RADAR QR";
         }
     }
 
@@ -660,7 +686,6 @@
             apagarCamaraAutomatica();
             document.getElementById('hint-text-box').style.display = 'none';
 
-            // Desplegamos la pantalla hacker de impacto
             const alertScreen = document.getElementById('hacker-alert');
             alertScreen.style.display = 'flex';
             playSound('success');
@@ -668,20 +693,11 @@
             setTimeout(() => {
                 alertScreen.style.display = 'none';
                 document.getElementById('pista-titol').innerText = pista.titol;
-                
-                // Disparamos la animación typewriter para el acertijo
                 animarTextoTypewriter(pista.text, 'actual-text');
-                
                 document.getElementById('error-text').style.display = 'none';
                 document.getElementById('hint-btn-trigger').style.display = 'inline-block';
                 actualitzarBarra(id);
                 gestionarBotonesVisibilidad();
-
-                const panel = document.getElementById('main-panel');
-                panel.style.boxShadow = "0 0 35px var(--cyber-green)";
-                setTimeout(() => {
-                    panel.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(29, 78, 216, 0.25)";
-                }, 400);
             }, 1200);
         }
     }
@@ -691,11 +707,17 @@
         document.getElementById('victory-layout').style.display = 'flex';
     }
 
+    // 🌟 FUNCIÓN DE HASH ACTUALIZADA 🌟
+    // Esto asegura que si recarga la página a mitad, vuelve al juego automáticamente.
     function comprovarHash() {
         const hash = window.location.hash;
         if (hash.includes('pista')) {
-            const num = hash.replace('#pista', '');
-            mostrarPista(parseInt(num));
+            const num = parseInt(hash.replace('#pista', ''));
+            if (!isNaN(num) && gincana[num]) {
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('main-panel').style.display = 'flex';
+                mostrarPista(num);
+            }
         }
     }
 
@@ -726,9 +748,7 @@
     }
 
     function encenderCamaraNativa() {
-        if (!html5QrCode) {
-            html5QrCode = new Html5Qrcode("reader");
-        }
+        if (!html5QrCode) { html5QrCode = new Html5Qrcode("reader"); }
         const config = { fps: 20, qrbox: { width: 220, height: 220 } };
         html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
         .catch((err) => {
@@ -741,7 +761,10 @@
     function controlarLectorCuerpo() {
         document.getElementById('custom-camera-btn').style.display = 'none';
         document.getElementById('camera-box-area').style.display = 'block';
-        encenderCamaraNativa();
+        
+        setTimeout(() => {
+            encenderCamaraNativa();
+        }, 150);
     }
 
     window.addEventListener('hashchange', comprovarHash);
