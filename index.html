@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA RECON // ANIVERSARI 14</title>
+    <style>
+        :root {
+            --bg-color: #030712;
+            --panel-bg: #0b1329;
+            --neon-blue: #38bdf8;
+            --dark-blue: #1d4ed8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+        }
+
+        .container {
+            background: var(--panel-bg);
+            border: 2px solid var(--dark-blue);
+            box-shadow: 0 0 25px rgba(29, 78, 216, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.1);
+            border-radius: 16px;
+            padding: 35px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .container::before {
+            content: "SYSTEM_ONLINE // CACHE_READY";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-color);
+            padding: 0 10px;
+            font-size: 0.65rem;
+            color: var(--neon-blue);
+            font-family: monospace;
+            letter-spacing: 1px;
+            border: 1px solid var(--dark-blue);
+        }
+
+        h1 {
+            color: var(--neon-blue);
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0 0 5px 0;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: monospace;
+        }
+
+        .pista-box {
+            background-color: rgba(3, 7, 18, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-left: 5px solid var(--neon-blue);
+            padding: 25px;
+            text-align: left;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            min-height: 100px;
+            box-sizing: border-box;
+        }
+
+        .manual-input {
+            margin-top: 25px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        input {
+            background: #030712;
+            border: 1px solid var(--dark-blue);
+            color: var(--neon-blue);
+            padding: 12px;
+            border-radius: 8px;
+            width: 70px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: monospace;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--dark-blue), #1e40af);
+            color: white;
+            border: 1px solid var(--neon-blue);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+        }
+
+        button:hover {
+            background: var(--neon-blue);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--neon-blue);
+            transform: translateY(-1px);
+        }
+
+        .footer-tech {
+            font-size: 0.7rem;
+            color: rgba(148, 163, 184, 0.3);
+            margin-top: 30px;
+            text-transform: uppercase;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-panel">
+    <h1 id="pista-titol">SISTEMA INICIALITZAT</h1>
+    <div class="subtitle" id="pista-sub">Esperant autenticació...</div>
+    
+    <div class="pista-box" id="pista-text">
+        Benvingut a la teua missió de 14 aniversari. El sistema s'ha sincronitzat correctament. Escaneja el següent QR o introdueix el codi de la teua targeta per a desvelar els objectius.
+    </div>
+
+    <div class="manual-input">
+        <input type="number" id="pista-num" placeholder="Nº" min="1" max="8">
+        <button onclick="carregarPistaManual()">Desbloquejar</button>
+    </div>
+    
+    <div class="footer-tech">ANTENNA: DISCONNECTED // SECURE_LOCAL_DATA</div>
+</div>
+
+<script>
+    const gincana = {
+        1: {
+            titol: "MISSIÓ 01 // START",
+            sub: "Sector: Sector Intern",
+            text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?"
+        },
+        2: {
+            titol: "MISSIÓ 02 // LAB",
+            sub: "Sector: Àrea Exterior",
+            text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra."
+        },
+        3: {
+            titol: "MISSIÓ 03 // AVANPOST",
+            sub: "Sector: El Galliner",
+            text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral."
+        },
+        4: {
+            titol: "MISSIÓ 04 // REFRIGERACIÓ",
+            sub: "Sector: La Piscina",
+            text: "Ja la tens. Ara busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, però està darrere de la seua esquena, on ningú es mira mentre es banya."
+        },
+        5: {
+            titol: "MISSIÓ 05 // PORTAL",
+            sub: "Sector: Perímetre exterior",
+            text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa."
+        },
+        6: {
+            titol: "MISSIÓ 06 // BOTÀNICA",
+            sub: "Sector: La Tanca",
+            text: "Ja la tens. Anem a pel Regal 3. Torna a mirar cap a terra. Busca entre les brosses del peu de la reixa on creix eixa planta com una enfiladissa amb punxes, la que et taca els dits de tinta fosca quan agafes el seu fruit a l'estiu."
+        },
+        7: {
+            titol: "MISSIÓ 07 // LOGÍSTICA",
+            sub: "Sector: Cuartet Paelles",
+            text: "Regal 3 aconseguit. Queda poc. Dirigix-te al lloc on es fa la màgia dels diumenges amb foc, llenya i arròs. Entra al seu quartet i alça el que s'usa per a apagar la set."
+        },
+        8: {
+            titol: "MISSIÓ 08 // ENDGAME",
+            sub: "Sector: Traster Ferramentes",
+            text: "Has arribat al final. El premi gran t'espera. El quart regal està en l'habitació on es guarden els remeis per a les coses trencades. Entra-hi, però esta vegada no busques en terra: el tresor mira a les teues sabates des del cel d'eixe quartet."
+        }
+    };
+
+    function mostrarPista(id) {
+        const pista = gincana[id];
+        if (pista) {
+            document.getElementById('pista-titol').innerText = pista.titol;
+            document.getElementById('pista-sub').innerText = pista.sub;
+            document.getElementById('pista-text').innerText = pista.text;
+            
+            const panel = document.getElementById('main-panel');
+            panel.style.transform = "scale(0.98)";
+            panel.style.boxShadow = "0 0 40px var(--neon-blue)";
+            setTimeout(() => {
+                panel.style.transform = "scale(1)";
+                panel.style.boxShadow = "0 0 25px rgba(29, 78, 216, 0.4)";
+            }, 200);
+        }
+    }
+
+    function comprovarHash() {
+        const hash = window.location.hash;
+        if (hash.includes('pista')) {
+            const num = hash.replace('#pista', '');
+            mostrarPista(num);
+        }
+    }
+
+    function carregarPistaManual() {
+        const num = document.getElementById('pista-num').value;
+        if (gincana[num]) {
+            window.location.hash = 'pista' + num;
+            mostrarPista(num);
+            document.getElementById('pista-num').value = '';
+        }
+    }
+
+    window.addEventListener('hashchange', comprovarHash);
+    window.onload = comprovarHash;
+</script>
+
+</body>
+</html>
