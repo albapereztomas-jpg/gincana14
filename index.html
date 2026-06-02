@@ -2,8 +2,8 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEMA RECON // ANIVERSARI 14</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SISTEMA RECON | ANIVERSARI 14</title>
     <style>
         :root {
             --bg-color: #030712;
@@ -12,6 +12,11 @@
             --dark-blue: #1d4ed8;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -23,8 +28,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            padding: 8px; /* Margen externo mínimo para estirar al máximo */
             overflow-x: hidden;
         }
 
@@ -34,17 +38,17 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-size: 15px 15px;
             z-index: -1;
         }
 
         .container {
             background: var(--panel-bg);
             border: 2px solid var(--dark-blue);
-            box-shadow: 0 0 25px rgba(29, 78, 216, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.1);
+            box-shadow: 0 0 25px rgba(29, 78, 216, 0.3), inset 0 0 15px rgba(56, 189, 248, 0.05);
             border-radius: 16px;
-            padding: 35px;
-            max-width: 480px;
+            padding: 35px 22px; /* Más espacio interno arriba y abajo */
+            max-width: 440px;
             width: 100%;
             text-align: center;
             position: relative;
@@ -52,12 +56,12 @@
         }
 
         .container::before {
-            content: "SYSTEM_ONLINE // CACHE_READY";
+            content: "SYSTEM ONLINE | AUDIO CONNECTED";
             position: absolute;
             top: -10px;
-            left: 20px;
+            left: 15px;
             background: var(--bg-color);
-            padding: 0 10px;
+            padding: 0 8px;
             font-size: 0.65rem;
             color: var(--neon-blue);
             font-family: monospace;
@@ -65,37 +69,50 @@
             border: 1px solid var(--dark-blue);
         }
 
-        h1 {
-            color: var(--neon-blue);
-            font-size: 1.6rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 0 0 5px 0;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin-bottom: 25px; /* Más separación con el título */
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-bottom: 30px;
+        .progress-step {
+            height: 10px; /* Barra de progreso ligeramente más alta */
+            flex-grow: 1;
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(29, 78, 216, 0.2);
+            border-radius: 2px;
+            transition: all 0.4s ease;
+        }
+
+        .progress-step.active {
+            background-color: var(--neon-blue);
+            box-shadow: 0 0 8px var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+
+        h1 {
+            color: var(--neon-blue);
+            font-size: clamp(1.4rem, 6vw, 1.8rem); /* Título más grande y visible */
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            font-family: monospace;
+            margin: 0 0 25px 0;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+            line-height: 1.2;
         }
 
         .pista-box {
             background-color: rgba(3, 7, 18, 0.6);
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.15);
             border-left: 5px solid var(--neon-blue);
-            padding: 25px;
+            padding: 24px 18px; /* Más aire dentro de la caja de texto */
             text-align: left;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: clamp(1.1rem, 4.5vw, 1.25rem); /* Letra del acertijo bastante más grande */
             line-height: 1.6;
             margin-bottom: 25px;
-            min-height: 100px;
-            box-sizing: border-box;
+            min-height: 110px;
         }
 
         .manual-input {
@@ -103,159 +120,197 @@
             display: flex;
             gap: 12px;
             justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 340px;
         }
 
         input {
             background: #030712;
             border: 1px solid var(--dark-blue);
             color: var(--neon-blue);
-            padding: 12px;
+            padding: 16px; /* Caja de texto más alta */
             border-radius: 8px;
-            width: 70px;
+            width: 100px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.3rem; /* Números del PIN más grandes */
             font-weight: bold;
             font-family: monospace;
             outline: none;
             transition: border 0.3s;
+            letter-spacing: 1px;
+            font-size: 18px; /* Asegura un tamaño cómodo en pantallas táctiles */
         }
 
         input:focus {
             border-color: var(--neon-blue);
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
         }
 
         button {
             background: linear-gradient(135deg, var(--dark-blue), #1e40af);
             color: white;
             border: 1px solid var(--neon-blue);
-            padding: 12px 24px;
+            padding: 16px 20px; /* Botón con más cuerpo */
             border-radius: 8px;
             cursor: pointer;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            font-size: 1rem; /* Texto del botón más grande */
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+            flex-grow: 1;
+            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.2);
         }
 
-        button:hover {
+        button:hover, button:active {
             background: var(--neon-blue);
             color: var(--bg-color);
-            box-shadow: 0 0 15px var(--neon-blue);
-            transform: translateY(-1px);
+            box-shadow: 0 0 12px var(--neon-blue);
         }
 
         .error-msg {
             color: #ef4444;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 6px;
             display: none;
             font-family: monospace;
         }
 
         .footer-tech {
             font-size: 0.7rem;
-            color: rgba(148, 163, 184, 0.3);
+            color: rgba(148, 163, 184, 0.25);
             margin-top: 30px;
             text-transform: uppercase;
             font-family: monospace;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
 <div class="container" id="main-panel">
+    <div class="progress-bar">
+        <div class="progress-step" id="step-1"></div>
+        <div class="progress-step" id="step-2"></div>
+        <div class="progress-step" id="step-3"></div>
+        <div class="progress-step" id="step-4"></div>
+        <div class="progress-step" id="step-5"></div>
+        <div class="progress-step" id="step-6"></div>
+        <div class="progress-step" id="step-7"></div>
+        <div class="progress-step" id="step-8"></div>
+    </div>
+
     <h1 id="pista-titol">SISTEMA INICIALITZAT</h1>
-    <div class="subtitle" id="pista-sub">Esperant autenticació...</div>
     
     <div class="pista-box" id="pista-text">
-        Benvingut a la teua missió de 14 aniversari. El sistema s'ha sincronitzat correctament. Escaneja el següent QR o introdueix el codi de la teua targeta per a desvelar els objectius.
+        Benvingut a la teua missió de 14 aniversari. El sistema s'ha sincronitzat correctament. Escaneja el següent QR o introdueix el PIN de 4 xifres de la teua targeta per a desvelar els objectius.
     </div>
 
     <div class="manual-input">
         <div class="input-group">
-            <input type="text" id="pista-num" placeholder="PIN" maxlength="4">
+            <input type="text" id="pista-num" placeholder="PIN" maxlength="4" inputmode="numeric" pattern="[0-9]*">
             <button onclick="carregarPistaManual()">Desbloquejar</button>
         </div>
         <div class="error-msg" id="error-text">❌ CODI PIN INCORRECTE</div>
     </div>
     
-    <div class="footer-tech">ANTENNA: DISCONNECTED // SECURE_LOCAL_DATA</div>
+    <div class="footer-tech">ANTENNA: DISCONNECTED | SECURE LOCAL DATA</div>
 </div>
 
 <script>
-    // Mapeo de códigos PIN de 4 dígitos a cada pista
+    let audioCtx = null;
+
+    function playSound(type) {
+        try {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            if (type === 'success') {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sine'; gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+                
+                setTimeout(() => {
+                    let osc2 = audioCtx.createOscillator();
+                    let gain2 = audioCtx.createGain();
+                    osc2.connect(gain2); gain2.connect(audioCtx.destination);
+                    osc2.type = 'sine'; gain2.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    osc2.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 0.15);
+                }, 100);
+
+            } else if (type === 'error') {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sawtooth'; gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+            }
+        } catch(e) {
+            console.log("Audio no soportado");
+        }
+    }
+
     const pins = {
-        "4821": 2,
-        "7395": 3,
-        "1064": 4,
-        "8513": 5,
-        "2947": 6,
-        "6152": 7,
-        "9308": 8
+        "3540": 1, "4821": 2, "7395": 3, "1064": 4, 
+        "8513": 5, "2947": 6, "6152": 7, "9308": 8
     };
 
     const gincana = {
-        1: {
-            titol: "MISSIÓ 01 // START",
-            sub: "Sector: Àrea Interior",
-            text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?"
-        },
-        2: {
-            titol: "MISSIÓ 02 // LAB",
-            sub: "Sector: Àrea Exterior",
-            text: "Molt bé. Anem a pel Regal 1. Ix al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra."
-        },
-        3: {
-            titol: "MISSIÓ 03 // AVANPOST",
-            sub: "Sector: El Galliner",
-            text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral."
-        },
-        4: {
-            titol: "MISSIÓ 04 // REFRIGERACIÓ",
-            sub: "Sector: La Piscina",
-            text: "Ja la tens. Ara busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, però està darrere de la seua esquena, on ningú es mira mentre es banya."
-        },
-        5: {
-            titol: "MISSIÓ 05 // PORTAL",
-            sub: "Sector: Perímetre exterior",
-            text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa."
-        },
-        6: {
-            titol: "MISSIÓ 06 // BOTÀNICA",
-            sub: "Sector: La Tanca",
-            text: "Ja la tens. Anem a pel Regal 3. Torna a mirar cap a terra. Busca entre les brosses del peu de la reixa on creix eixa planta com una enfiladissa amb punxes, la que et taca els dits de tinta fosca quan agafes el seu fruit a l'estiu."
-        },
-        7: {
-            titol: "MISSIÓ 07 // LOGÍSTICA",
-            sub: "Sector: Cuartet Paelles",
-            text: "Regal 3 aconseguit. Queda poc. Dirigix-te al lloc on es fa la màgia dels diumenges amb foc, llenya i arròs. Entra al seu quartet i alça el que s'usa per a apagar la set."
-        },
-        8: {
-            titol: "MISSIÓ 08 // ENDGAME",
-            sub: "Sector: Traster Ferramentes",
-            text: "Has arribat al final. El premi gran t'espera. El quart regal està en l'habitació on es guarden els remeis per a les coses trencades. Entra-hi, però esta vegada no busques en terra: el tresor mira a les teues sabates des del cel d'eixe quartet."
-        }
+        1: { titol: "MISSIÓ 01: START", text: "La segona targeta s'amaga dins de casa. Està apegada al costat del guardià del fred, l'únic que treballa dia i nit sense descansar. Què és?" },
+        2: { titol: "MISSIÓ 02: LAB", text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra." },
+        3: { titol: "MISSIÓ 03: AVANPOST", text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques carat està molt prop d'on estàs. Gira't i busca dins del refugi fet de fusta que vigila el corral." },
+        4: { titol: "MISSIÓ 04: REFRIGERACIÓ", text: "Ja la tens. Ara busca el Regal 2. Canviem de lloc. El regal t'espera en el peatge obligatori d'aigua abans d'entrar a nadar, pero està darrere de la seua esquena, on ningú es mira mentre es banya." },
+        5: { titol: "MISSIÓ 05: PORTAL", text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa." },
+        6: { titol: "MISSIÓ 06: BOTÀNICA", text: "Ja la tens. Anem a pel Regal 3. Torna a mirar cap a terra. Busca entre les brosses del peu de la reixa on creix eixa planta com una enfiladissa amb punxes, la que et taca els dits de tinta fosca quan agafes el seu fruit a l'estiu." },
+        7: { titol: "MISSIÓ 07: LOGÍSTICA", text: "Regal 3 aconseguit. Queda poc. Dirigix-te al lloc on es fa la màgia dels diumenges amb foc, llenya i arròs. Entra al seu quartet i alça el que s'usa per a apagar la set." },
+        8: { titol: "MISSIÓ 08: ENDGAME", text: "Has arribat al final. El premi gran t'espera. El quart regal està en l'habitació on es guarden els remeis per a les coses trencades. Entra-hi, però esta vegada no busques en terra: el tresor mira a les teues sabates des del cel d'eixe quartet." }
     };
+
+    function actualitzarBarra(id) {
+        for (let i = 1; i <= 8; i++) {
+            const step = document.getElementById('step-' + i);
+            if (i <= id) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        }
+    }
 
     function mostrarPista(id) {
         const pista = gincana[id];
         if (pista) {
             document.getElementById('pista-titol').innerText = pista.titol;
-            document.getElementById('pista-sub').innerText = pista.sub;
             document.getElementById('pista-text').innerText = pista.text;
             document.getElementById('error-text').style.display = 'none';
+            
+            actualitzarBarra(id);
+            playSound('success');
             
             const panel = document.getElementById('main-panel');
             panel.style.transform = "scale(0.98)";
             panel.style.boxShadow = "0 0 40px var(--neon-blue)";
             setTimeout(() => {
                 panel.style.transform = "scale(1)";
-                panel.style.boxShadow = "0 0 25px rgba(29, 78, 216, 0.4)";
+                panel.style.boxShadow = "0 0 25px rgba(29, 78, 216, 0.3)";
             }, 200);
         }
     }
@@ -278,6 +333,7 @@
             document.getElementById('pista-num').value = '';
         } else {
             document.getElementById('error-text').style.display = 'block';
+            playSound('error');
         }
     }
 
