@@ -462,6 +462,15 @@
             0% { opacity: 0.6; }
             100% { opacity: 1; }
         }
+        /* 🌟 ANIMACIONES PARA LA HUELLA DACTILAR 🌟 */
+        .fingerprint-container { position: relative; width: 100px; height: 110px; display: flex; justify-content: center; align-items: center; border: 2px solid rgba(16, 185, 129, 0.3); border-radius: 20px; background: rgba(16, 185, 129, 0.05); cursor: pointer; overflow: hidden; transition: all 0.3s; user-select: none; -webkit-user-select: none; touch-action: none; margin: 0 auto; }
+        .fingerprint-container svg { width: 70px; height: 70px; stroke: rgba(16, 185, 129, 0.5); transition: stroke 0.3s; pointer-events: none; }
+        .scanner-laser-fp { position: absolute; top: -10px; left: 0; width: 100%; height: 3px; background: #fff; box-shadow: 0 0 15px 4px var(--cyber-green); opacity: 0; z-index: 5; pointer-events: none; }
+        .fingerprint-container.scanning-active { background: rgba(16, 185, 129, 0.15); border-color: var(--cyber-green); box-shadow: 0 0 25px rgba(16, 185, 129, 0.5), inset 0 0 15px rgba(16, 185, 129, 0.3); transform: scale(0.95); }
+        .fingerprint-container.scanning-active svg { stroke: var(--cyber-green); filter: drop-shadow(0 0 6px var(--cyber-green)); }
+        .fingerprint-container.scanning-active .scanner-laser-fp { opacity: 1; animation: scanFinger 1.2s ease-in-out infinite alternate; }
+        @keyframes scanFinger { 0% { top: 0%; } 100% { top: 95%; } }
+        @keyframes pulseTextHuella { 0% { opacity: 0.5; } 100% { opacity: 1; filter: drop-shadow(0 0 5px var(--cyber-green)); } }
     </style>
 </head>
 <body>
@@ -487,15 +496,26 @@
 <div class="container" id="main-panel" style="display: none;">
     <div class="cyber-alert-screen" id="hacker-alert">
         <div class="alert-title">🟢 NIVELL SUPERAT 🟢</div>
-        <div class="alert-subtitle">DESBLOQUEJANT PROPERA MISSIÓ...</div>
         
-        <div style="margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%;">
-            <button onclick="confirmarAvanceHuella()" style="background: rgba(16, 185, 129, 0.1); border: 2px solid var(--cyber-green); color: var(--cyber-green); border-radius: 50%; width: 80px; height: 80px; font-size: 32px; cursor: pointer; display: flex; justify-content: center; align-items: center; outline: none; animation: pulseHuella 1.5s infinite alternate; transition: all 0.2s;">
-                ☝️
-            </button>
-            <div style="font-family: monospace; font-size: 0.75rem; color: var(--cyber-green); letter-spacing: 1px; text-transform: uppercase; font-weight: bold; line-height: 1.4; animation: pulseTextHuella 1s infinite alternate; text-align: center;">
+        <div style="margin-top: 25px; width: 100%;">
+            <div class="fingerprint-container" id="fp-btn" onmousedown="iniciarEscaneoHuella(event)" onmouseup="detenerEscaneoHuella(event)" onmouseleave="detenerEscaneoHuella(event)" ontouchstart="iniciarEscaneoHuella(event)" ontouchend="detenerEscaneoHuella(event)">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 4a8 8 0 0 0-8 8v2" />
+                    <path d="M16 10a4 4 0 0 0-8 0v4" />
+                    <path d="M12 14v1" />
+                    <path d="M8 12v3" />
+                    <path d="M20 12v2" />
+                    <path d="M4 12v2" />
+                    <path d="M12 8a4 4 0 0 1 4 4v2" />
+                    <path d="M12 20a8 8 0 0 1-8-8v-2" />
+                    <path d="M16 16v2" />
+                    <path d="M20 16a8 8 0 0 0-8-8" />
+                </svg>
+                <div class="scanner-laser-fp" id="fp-laser"></div>
+            </div>
+            <div id="fp-text-status" style="margin-top: 15px; font-family: monospace; font-size: 0.8rem; color: var(--cyber-green); letter-spacing: 1px; text-transform: uppercase; font-weight: bold; line-height: 1.5; animation: pulseTextHuella 1s infinite alternate;">
                 AUTENTICACIÓ BIOMÈTRICA REQUERIDA<br>
-                <span style="color: var(--text-muted); font-size: 0.65rem; font-weight: normal;">(PREMSA LA HUELLA PER A REVELAR DADES)</span>
+                <span style="color: var(--text-muted); font-size: 0.7rem; font-weight: normal;">(MANTÍN PREMUT PER A ESCANEJAR)</span>
             </div>
         </div>
     </div>
@@ -551,7 +571,9 @@
     let html5QrCode = null;
     let currentPistaId = null;
     let typingInterval = null;
-    let pistaPendienteId = null; // Variable global para guardar el nivel desbloqueado
+    let pistaPendienteId = null; // Variable global para guardar el nivel desbloqueado 
+    let scanTimeoutId = null;
+    let scanProgressInterval = null;
 
     // 🌟 FUNCIÓN NUEVA PARA EMPEZAR EL JUEGO 🌟
     function iniciarJoc() {
@@ -600,7 +622,7 @@
         },
         2: { 
             titol: "NIVELL 02: LAB", 
-            text: "Molt bé. Anem a pel Regal 1. Sal al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra.",
+            text: "Molt bé. Anem a pel Regal 1. Ix al jardí. El teu objectiu i la següent targeta estan dalt d'una herència de dinosaures, amagat en l'arbre que té un cor de fusta gegant en la seua fruita. No mires al terra.",
             ajuda: "📡 PISTA PROTOCOL 14: Busca en un arbre que té fruites grans i creix prop de la tanca." 
         },
         3: { 
@@ -699,24 +721,66 @@
     }
 
     // 🌟 SE MODIFICA ESTA FUNCIÓN: YA NO TIENE TIEMPO AUTOMÁTICO 🌟
+
+
     function mostrarPista(id) {
-        pistaPendienteId = id; // Guardamos el nivel desbloqueado en espera de la huella
+        pistaPendienteId = id; 
         apagarCamaraAutomatica();
         document.getElementById('hint-text-box').style.display = 'none';
 
-        const alertScreen = document.getElementById('hacker-alert');
-        alertScreen.style.display = 'flex'; // Mostramos la pantalla verde fija
-        playSound('success');
+        // Solo muestra la huella si no es la pantalla de inicio (Nivel 1)
+        if(id > 1) {
+            const alertScreen = document.getElementById('hacker-alert');
+            alertScreen.style.display = 'flex';
+            playSound('success');
+        } else {
+            ejecutarCargaDePista();
+        }
     }
 
-    // 🌟 FUNCIÓN NUEVA: EJECUTADA AL TOCAR LA HUELLA DIGITAL 🌟
-    function confirmarAvanceHuella() {
-        if (pistaPendienteId === null) return;
-        
-        playSound('success'); // Pitido de confirmación biométrica
-        const alertScreen = document.getElementById('hacker-alert');
-        alertScreen.style.display = 'none'; // Escondemos por fin la pantalla verde
+    function iniciarEscaneoHuella(e) {
+        if(e.type === 'touchstart') e.preventDefault(); 
+        if(pistaPendienteId === null) return;
 
+        const btn = document.getElementById('fp-btn');
+        const textStatus = document.getElementById('fp-text-status');
+
+        btn.classList.add('scanning-active');
+        textStatus.innerText = "ESCANEJANT IDENTITAT... 0%";
+        
+        let progress = 0;
+        scanProgressInterval = setInterval(() => {
+            progress += 10;
+            if(progress <= 100) textStatus.innerText = `ESCANEJANT IDENTITAT... ${progress}%`;
+        }, 150);
+
+        scanTimeoutId = setTimeout(() => {
+            clearInterval(scanProgressInterval);
+            textStatus.innerText = "ACCÉS AUTORITZAT";
+            btn.classList.remove('scanning-active');
+            playSound('success');
+            setTimeout(() => {
+                document.getElementById('hacker-alert').style.display = 'none';
+                ejecutarCargaDePista();
+            }, 300);
+        }, 1500); // 1.5 segundos pulsado
+    }
+
+    function detenerEscaneoHuella(e) {
+        if(e.type === 'touchend' || e.type === 'touchcancel') e.preventDefault();
+
+        if(scanTimeoutId) { clearTimeout(scanTimeoutId); scanTimeoutId = null; }
+        if(scanProgressInterval) { clearInterval(scanProgressInterval); scanProgressInterval = null; }
+
+        const btn = document.getElementById('fp-btn');
+        const textStatus = document.getElementById('fp-text-status');
+
+        btn.classList.remove('scanning-active');
+        textStatus.innerHTML = "AUTENTICACIÓ BIOMÈTRICA REQUERIDA<br><span style='color: var(--text-muted); font-size: 0.7rem; font-weight: normal;'>(MANTÍN PREMUT PER A ESCANEJAR)</span>";
+    }
+
+    function ejecutarCargaDePista() {
+        if (pistaPendienteId === null) return;
         const pista = gincana[pistaPendienteId];
         if (pista) {
             currentPistaId = pistaPendienteId;
@@ -727,7 +791,7 @@
             actualitzarBarra(pistaPendienteId);
             gestionarBotonesVisibilidad();
         }
-        pistaPendienteId = null; // Reseteamos el estado pendiente
+        pistaPendienteId = null;
     }
 
     function activarVictoriaFinal() {
