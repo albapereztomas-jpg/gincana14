@@ -462,15 +462,87 @@
             0% { opacity: 0.6; }
             100% { opacity: 1; }
         }
-        /* 🌟 ANIMACIONES PARA LA HUELLA DACTILAR 🌟 */
-        .fingerprint-container { position: relative; width: 100px; height: 110px; display: flex; justify-content: center; align-items: center; border: 2px solid rgba(16, 185, 129, 0.3); border-radius: 20px; background: rgba(16, 185, 129, 0.05); cursor: pointer; overflow: hidden; transition: all 0.3s; user-select: none; -webkit-user-select: none; touch-action: none; margin: 0 auto; }
-        .fingerprint-container svg { width: 70px; height: 70px; stroke: rgba(16, 185, 129, 0.5); transition: stroke 0.3s; pointer-events: none; }
-        .scanner-laser-fp { position: absolute; top: -10px; left: 0; width: 100%; height: 3px; background: #fff; box-shadow: 0 0 15px 4px var(--cyber-green); opacity: 0; z-index: 5; pointer-events: none; }
-        .fingerprint-container.scanning-active { background: rgba(16, 185, 129, 0.15); border-color: var(--cyber-green); box-shadow: 0 0 25px rgba(16, 185, 129, 0.5), inset 0 0 15px rgba(16, 185, 129, 0.3); transform: scale(0.95); }
-        .fingerprint-container.scanning-active svg { stroke: var(--cyber-green); filter: drop-shadow(0 0 6px var(--cyber-green)); }
-        .fingerprint-container.scanning-active .scanner-laser-fp { opacity: 1; animation: scanFinger 1.2s ease-in-out infinite alternate; }
-        @keyframes scanFinger { 0% { top: 0%; } 100% { top: 95%; } }
-        @keyframes pulseTextHuella { 0% { opacity: 0.5; } 100% { opacity: 1; filter: drop-shadow(0 0 5px var(--cyber-green)); } }
+        /* 🌟 ESTILOS PRO PARA EL ESCÁNER DE HUELLA 🌟 */
+        .fingerprint-container { 
+            position: relative; 
+            width: 130px; 
+            height: 130px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            border: 2px dashed rgba(16, 185, 129, 0.4); 
+            border-radius: 50%; /* Ahora es un círculo perfecto */
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(2, 6, 23, 0) 70%); 
+            cursor: pointer; 
+            overflow: hidden; 
+            transition: all 0.3s; 
+            user-select: none; 
+            -webkit-user-select: none; 
+            touch-action: none; 
+            margin: 0 auto; 
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+        }
+        /* Anillo holográfico giratorio */
+        .fingerprint-container::before {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: rgba(16, 185, 129, 0.5);
+            border-bottom-color: rgba(16, 185, 129, 0.5);
+            animation: spinHUD 4s linear infinite;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        @keyframes spinHUD {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .fingerprint-container svg { 
+            width: 65px; 
+            height: 65px; 
+            stroke: rgba(16, 185, 129, 0.8); 
+            stroke-width: 1.5;
+            transition: all 0.3s; 
+            pointer-events: none; 
+            filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.5));
+        }
+        /* Láser más potente */
+        .scanner-laser-fp { 
+            position: absolute; 
+            top: -10px; 
+            left: 0; 
+            width: 100%; 
+            height: 4px; 
+            background: #ffffff; 
+            box-shadow: 0 0 15px 5px var(--cyber-green), 0 0 30px 10px var(--cyber-green); 
+            opacity: 0; 
+            z-index: 5; 
+            pointer-events: none; 
+        }
+        .fingerprint-container.scanning-active { 
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, rgba(16, 185, 129, 0.05) 80%); 
+            border-color: var(--cyber-green); 
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), inset 0 0 25px rgba(16, 185, 129, 0.4); 
+            transform: scale(0.95); 
+        }
+        .fingerprint-container.scanning-active svg { 
+            stroke: #ffffff; 
+            filter: drop-shadow(0 0 10px var(--cyber-green)); 
+        }
+        .fingerprint-container.scanning-active .scanner-laser-fp { 
+            opacity: 1; 
+            animation: scanFinger 1.2s ease-in-out infinite alternate; 
+        }
+        @keyframes scanFinger { 
+            0% { top: -5%; } 
+            100% { top: 100%; } 
+        }
+        @keyframes pulseTextHuella { 
+            0% { opacity: 0.5; } 
+            100% { opacity: 1; filter: drop-shadow(0 0 5px var(--cyber-green)); } 
+        }
     </style>
 </head>
 <body>
@@ -499,18 +571,21 @@
         <div class="alert-title">🟢 NIVELL SUPERAT 🟢</div>
         
         <div style="margin-top: 25px; width: 100%;">
-            <div class="fingerprint-container" id="fp-btn" onmousedown="iniciarEscaneoHuella(event)" onmouseup="detenerEscaneoHuella(event)" onmouseleave="detenerEscaneoHuella(event)" ontouchstart="iniciarEscaneoHuella(event)" ontouchend="detenerEscaneoHuella(event)">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 4a8 8 0 0 0-8 8v2" />
-                    <path d="M16 10a4 4 0 0 0-8 0v4" />
-                    <path d="M12 14v1" />
-                    <path d="M8 12v3" />
-                    <path d="M20 12v2" />
-                    <path d="M4 12v2" />
-                    <path d="M12 8a4 4 0 0 1 4 4v2" />
-                    <path d="M12 20a8 8 0 0 1-8-8v-2" />
-                    <path d="M16 16v2" />
-                    <path d="M20 16a8 8 0 0 0-8-8" />
+        <div class="fingerprint-container" id="fp-btn" 
+                 onmousedown="iniciarEscaneoHuella(event)" 
+                 onmouseup="detenerEscaneoHuella(event)" 
+                 onmouseleave="detenerEscaneoHuella(event)" 
+                 ontouchstart="iniciarEscaneoHuella(event)" 
+                 ontouchend="detenerEscaneoHuella(event)">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 12c.3-.3.6-.5 1-.5 1.2 0 1.9.9 1.9 2 0 1.1-.7 2-1.9 2-1.2 0-1.9-.9-1.9-2s.7-2 1.9-2"/>
+                    <path d="M10.5 13.5c.6-.6 1.4-.9 2-.9 2.1 0 3.1 1.7 3.1 3.5s-1 3.5-3.1 3.5-3.1-1.7-3.1-3.5c0-1 .4-1.9.9-2.6"/>
+                    <path d="M9 15c.9-.9 2-.9 3-.9 3.1 0 4.1 2.5 4.1 5s-1 5-4.1 5-4.1-2.5-4.1-5c0-1.5.5-2.9 1.4-3.9"/>
+                    <path d="M7.5 16.5c1.1-1.1 2.6-1.5 4-.1.3-.3.7-.5 1-.5 3.1 0 5 3 5 6s-1.9 6-5 6c-3 0-5-3-5-6c0-2 .8-3.7 2-5"/>
+                    <path d="M6 18c1.3-1.3 3.1-1.5 4.5-.6.2-.2.5-.3.7-.3 3.1 0 6 3 6 7s-2.9 7-6 7-6-3-6-7c0-2.3 1.1-4.2 2.7-5.5"/>
+                    <path d="M19 14.5A5.5 5.5 0 0 0 16 10a7 7 0 0 0-4-1.5"/>
+                    <path d="M5 14.5A5.5 5.5 0 0 1 8 10a7 7 0 0 1 4-1.5"/>
                 </svg>
                 <div class="scanner-laser-fp" id="fp-laser"></div>
             </div>
