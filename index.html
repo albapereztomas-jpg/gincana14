@@ -30,11 +30,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100dvh; /* Ajuste perfecto a la pantalla real del móvil */
+            height: 100dvh;
             width: 100vw;
             margin: 0;
             padding: 15px; 
-            overflow: hidden; /* Elimina cualquier posibilidad de scroll */
+            overflow: hidden;
         }
 
         body::before {
@@ -47,11 +47,26 @@
             z-index: -1;
         }
 
+        /* Efecto Confeti CSS para la Victoria */
+        .confetti { 
+            position: absolute; 
+            width: 8px; 
+            height: 16px; 
+            background: var(--cyber-gold); 
+            opacity: 0; 
+            animation: fall 3s linear infinite; 
+            z-index: 10000;
+        }
+        @keyframes fall { 
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } 
+        }
+
         .container {
             background: var(--panel-bg);
             border: 2px solid var(--dark-blue);
             border-radius: 20px;
-            padding: 24px 15px 15px 15px; /* Ajustado para maximizar espacio */
+            padding: 24px 15px 15px 15px;
             max-width: 420px;
             width: 100%;
             max-height: 100%;
@@ -60,8 +75,8 @@
             position: relative;
             transition: all 0.3s ease;
             animation: rgbLights 6s linear infinite;
-            overflow: visible; /* Permite que asome el título de arriba */
-            margin-top: 15px;  /* Evita que choque con el borde de la pantalla */
+            overflow: visible;
+            margin-top: 15px;
         }
 
         @keyframes rgbLights {
@@ -79,7 +94,7 @@
             right: 15px;
             background: var(--bg-color);
             padding: 2px 6px;
-            font-size: 0.65rem; /* Letra más legible */
+            font-size: 0.65rem;
             color: var(--neon-blue);
             font-family: monospace;
             letter-spacing: 1px;
@@ -115,7 +130,7 @@
 
         h1 {
             color: var(--neon-blue);
-            font-size: clamp(1.3rem, 6vw, 1.6rem); /* Título más grande */
+            font-size: clamp(1.3rem, 6vw, 1.6rem);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -131,13 +146,13 @@
             padding: 18px 15px;
             text-align: left;
             border-radius: 12px;
-            font-size: clamp(1.05rem, 5vw, 1.25rem); /* Texto de pista mucho más legible */
+            font-size: clamp(1.05rem, 5vw, 1.25rem);
             line-height: 1.45;
             margin-bottom: 10px;
             position: relative;
             min-height: 90px;
             flex-shrink: 1;
-            overflow-y: auto; /* Por si el texto es muy largo en móviles enanos */
+            overflow-y: auto;
         }
 
         .cyber-alert-screen {
@@ -224,7 +239,7 @@
         #reader video {
             border-radius: 10px !important;
             object-fit: cover !important;
-            max-height: 180px; /* Un poco más bajo para ahorrar espacio vertical */
+            max-height: 180px;
             width: 100% !important;
             display: block;
         }
@@ -271,7 +286,7 @@
             color: white;
             border: 1px solid var(--neon-blue);
             padding: 16px 20px;
-            font-size: 1.1rem; /* Botón más grande */
+            font-size: 1.1rem;
             font-weight: 800;
             border-radius: 12px;
             cursor: pointer;
@@ -316,7 +331,7 @@
             width: 100%;
             border-top: 1px dashed rgba(56, 189, 248, 0.15);
             padding-top: 15px;
-            margin-top: auto; /* Empuja esta caja hacia el final si hay espacio */
+            margin-top: auto;
         }
 
         .input-group {
@@ -372,7 +387,7 @@
         .cyber-victory-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #020617;
+            background-color: rgba(2, 6, 23, 0.95);
             z-index: 9999;
             display: none;
             flex-direction: column;
@@ -390,8 +405,15 @@
             border-radius: 24px;
             max-width: 400px;
             width: 100%;
-            box-shadow: 0 0 50px rgba(245, 158, 11, 0.3), inset 0 0 20px rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 50px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(245, 158, 11, 0.1);
             position: relative;
+            transform: scale(0.8);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            z-index: 10001;
+        }
+
+        @keyframes popIn { 
+            to { transform: scale(1); } 
         }
 
         .victory-card::before {
@@ -552,6 +574,7 @@
 <body>
 
 <div class="cyber-victory-screen" id="victory-layout">
+    <div id="confetti-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 10000;"></div>
     <div class="victory-card">
         <div class="victory-title">MISSIÓ COMPLETA</div>
         <div class="victory-subtitle">🏆 FELICITATS PELS 14 ANYS! 🏆</div>
@@ -682,6 +705,13 @@
         } catch(e) { console.log("Audio error"); }
     }
 
+    function triggerSuccessEffects() {
+        if (window.navigator.vibrate) {
+            window.navigator.vibrate([100, 50, 100]);
+        }
+        playSound('success');
+    }
+
     const pins = {
         "3540": 1, "4821": 2, "7395": 3, "1064": 4, 
         "8513": 5, "2947": 6, "6152": 7, "9308": 8
@@ -701,7 +731,7 @@
         3: { 
             titol: "NIVELL 03: AVANPOST", 
             text: "Primer regal aconseguit. Anem a per la Targeta 4. El paper que busques s'ubica molt prop d'on estàs. Busca per les afores de la caseta feta de fusta.",
-            ajuda: "📡 PISTA PROTOCOL 14: Revisa molt prop del tancat on viuen o vivien les gallines." 
+            ajuda: "📡 PISTA PROTOCOL 14: Revisa molt prop de la caseta de madera dels papis." 
         },
         4: { 
             titol: "NIVELL 04: REFRIGERACIÓ", 
@@ -710,8 +740,8 @@
         },
         5: { 
             titol: "NIVELL 05: PORTAL", 
-            text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una barrera de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa.",
-            ajuda: "📡 PISTA PROTOCOL 14: ÉS la porta gran de ferro exterior per on entren els cotxes." 
+            text: "Segon regal en la butxaca. Anem a per la Targeta 6. Busca una porta de metall que quasi mai s'usa. Té unes plantes al costat i, si et poses davant d'ella, estaràs mirant directament als ulls d'una finestra de la casa.",
+            ajuda: "📡 PISTA PROTOCOL 14: ÉS la porta gran de ferro exterior xicoteta." 
         },
         6: { 
             titol: "NIVELL 06: BOTÀNICA", 
@@ -721,7 +751,7 @@
         7: { 
             titol: "NIVELL 07: LOGÍSTICA", 
             text: "Regal 3 aconseguit. Queda poc. Dirigix-te al lloc on es fa la màgia dels diumenges amb foc, llenya i arròs. Entra al seu quartet i alça el que s'usa per a apagar la set.",
-            ajuda: "📡 PISTA PROTOCOL 14: Entra al quartet de les paelles i alça els botons o l'entorn del termo/butà." 
+            ajuda: "📡 PISTA PROTOCOL 14: Entra al quartet de les paelles i alça botelles." 
         },
         8: { 
             titol: "NIVELL 08: ENDGAME", 
@@ -831,7 +861,7 @@
             clearInterval(scanProgressInterval);
             textStatus.innerText = "ACCÉS AUTORITZAT";
             btn.classList.remove('scanning-active');
-            playSound('success');
+            triggerSuccessEffects(); // Añadido vibrar y sonar al autorizar
             setTimeout(() => {
                 document.getElementById('hacker-alert').style.display = 'none';
                 ejecutarCargaDePista();
@@ -868,7 +898,20 @@
     }
 
     function activarVictoriaFinal() {
-        playSound('success');
+        triggerSuccessEffects(); // Vibración al ganar
+        
+        const container = document.getElementById('confetti-container');
+        container.innerHTML = ''; // Limpiamos por si pulsó dos veces
+        
+        // Creamos 50 piezas de confeti dorado
+        for(let i=0; i<50; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.animationDelay = Math.random() * 2 + 's';
+            container.appendChild(c);
+        }
+        
         document.getElementById('victory-layout').style.display = 'flex';
     }
 
@@ -889,12 +932,16 @@
         const numPista = pins[pinIntroducido];
 
         if (numPista) {
+            triggerSuccessEffects(); // Vibra si el pin es correcto
             window.location.hash = 'pista' + numPista;
             mostrarPista(numPista);
             document.getElementById('pista-num').value = '';
         } else {
             document.getElementById('error-text').style.display = 'block';
             playSound('error');
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(200); // Vibración de error
+            }
         }
     }
 
@@ -904,6 +951,7 @@
             const numPista = parseInt(partes[partes.length - 1]);
             
             if (gincana[numPista]) {
+                triggerSuccessEffects(); // Vibra si el QR es correcto
                 window.location.hash = 'pista' + numPista;
                 mostrarPista(numPista);
             }
@@ -924,7 +972,7 @@
 
     function controlarLectorCuerpo() {
         document.getElementById('custom-camera-btn').style.display = 'none';
-        document.getElementById('hint-area').style.display = 'none'; /* Oculta la ayuda para dar espacio a la cámara */
+        document.getElementById('hint-area').style.display = 'none'; 
         document.getElementById('camera-box-area').style.display = 'block';
         
         setTimeout(() => {
