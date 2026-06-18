@@ -24,18 +24,18 @@
         }
 
         body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Cambia min-height por height */
-    width: 100vw;  /* Asegura el ancho */
-    margin: 0;
-    padding: 10px; /* Reducimos un poco el padding */
-    overflow: hidden; /* Esto evita que aparezca la barra de desplazamiento */
-}
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100dvh; /* Ajuste perfecto a la pantalla real del móvil */
+            width: 100vw;
+            margin: 0;
+            padding: 15px; 
+            overflow: hidden; /* Elimina cualquier posibilidad de scroll */
+        }
 
         body::before {
             content: "";
@@ -48,20 +48,21 @@
         }
 
         .container {
-    background: var(--panel-bg);
-    border: 2px solid var(--dark-blue);
-    border-radius: 20px;
-    padding: 20px 15px; /* Padding un poco más ajustado */
-    max-width: 420px;
-    width: 100%;
-    max-height: 95vh; /* Importante: que no supere el alto de la pantalla */
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: all 0.3s ease;
-    animation: rgbLights 6s linear infinite;
-    overflow-y: auto; /* Permite scroll interno solo si es estrictamente necesario */
-}
+            background: var(--panel-bg);
+            border: 2px solid var(--dark-blue);
+            border-radius: 20px;
+            padding: 24px 15px 15px 15px; /* Ajustado para maximizar espacio */
+            max-width: 420px;
+            width: 100%;
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: rgbLights 6s linear infinite;
+            overflow: visible; /* Permite que asome el título de arriba */
+            margin-top: 15px;  /* Evita que choque con el borde de la pantalla */
+        }
 
         @keyframes rgbLights {
             0% { border-color: #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.3); }
@@ -73,12 +74,12 @@
         .container::before {
             content: "JUGADOR: 01 | NIVELL: 14 | RPM: 7400 | NITRO: LLEST";
             position: absolute;
-            top: -11px;
+            top: -12px;
             left: 15px;
             right: 15px;
             background: var(--bg-color);
             padding: 2px 6px;
-            font-size: 0.58rem;
+            font-size: 0.65rem; /* Letra más legible */
             color: var(--neon-blue);
             font-family: monospace;
             letter-spacing: 1px;
@@ -87,6 +88,7 @@
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
+            z-index: 10;
         }
 
         .progress-bar {
@@ -97,7 +99,7 @@
         }
 
         .progress-step {
-            height: 9px;
+            height: 8px;
             flex-grow: 1;
             background-color: rgba(56, 189, 248, 0.08);
             border: 1px solid rgba(29, 78, 216, 0.2);
@@ -113,7 +115,7 @@
 
         h1 {
             color: var(--neon-blue);
-            font-size: clamp(1.2rem, 5vw, 1.5rem);
+            font-size: clamp(1.3rem, 6vw, 1.6rem); /* Título más grande */
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -126,14 +128,16 @@
             background-color: rgba(3, 7, 18, 0.6);
             border: 1px solid rgba(56, 189, 248, 0.12);
             border-left: 5px solid var(--neon-blue);
-            padding: 20px 15px;
+            padding: 18px 15px;
             text-align: left;
             border-radius: 12px;
-            font-size: clamp(0.9rem, 4vw, 1.1rem);
-            line-height: 1.6;
+            font-size: clamp(1.05rem, 5vw, 1.25rem); /* Texto de pista mucho más legible */
+            line-height: 1.45;
             margin-bottom: 10px;
             position: relative;
-            min-height: 100px;
+            min-height: 90px;
+            flex-shrink: 1;
+            overflow-y: auto; /* Por si el texto es muy largo en móviles enanos */
         }
 
         .cyber-alert-screen {
@@ -156,24 +160,15 @@
         .alert-title {
             color: var(--cyber-green);
             font-family: monospace;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 900;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             animation: pulse-border 0.3s infinite alternate;
         }
 
-        .alert-subtitle {
-            color: var(--text-main);
-            font-family: monospace;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
         .hint-container {
-            margin-bottom: 22px;
+            margin-bottom: 12px;
             text-align: left;
             width: 100%;
         }
@@ -183,7 +178,7 @@
             border: none;
             color: rgba(148, 163, 184, 0.4);
             font-family: monospace;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -229,7 +224,7 @@
         #reader video {
             border-radius: 10px !important;
             object-fit: cover !important;
-            max-height: 200px;
+            max-height: 180px; /* Un poco más bajo para ahorrar espacio vertical */
             width: 100% !important;
             display: block;
         }
@@ -276,7 +271,7 @@
             color: white;
             border: 1px solid var(--neon-blue);
             padding: 16px 20px;
-            font-size: 0.95rem;
+            font-size: 1.1rem; /* Botón más grande */
             font-weight: 800;
             border-radius: 12px;
             cursor: pointer;
@@ -285,7 +280,7 @@
             width: 100%;
             box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
             transition: all 0.2s;
-            margin-bottom: 22px;
+            margin-bottom: 12px;
         }
 
         .btn-victory-claim {
@@ -293,7 +288,7 @@
             color: white;
             border: 2px solid #fef08a;
             padding: 18px 20px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 900;
             border-radius: 14px;
             cursor: pointer;
@@ -302,7 +297,7 @@
             width: 100%;
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
             display: none;
-            margin-bottom: 22px;
+            margin-bottom: 12px;
             animation: heartbeat 1.5s infinite;
         }
 
@@ -310,21 +305,6 @@
             0% { transform: scale(1); box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
             50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(245, 158, 11, 0.7); }
             100% { transform: scale(1); box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
-        }
-
-        .btn-manual {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: var(--text-muted);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 15px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            flex-grow: 1;
         }
 
         .manual-input {
@@ -335,7 +315,8 @@
             flex-direction: column;
             width: 100%;
             border-top: 1px dashed rgba(56, 189, 248, 0.15);
-            padding-top: 18px;
+            padding-top: 15px;
+            margin-top: auto; /* Empuja esta caja hacia el final si hay espacio */
         }
 
         .input-group {
@@ -348,7 +329,7 @@
             background: #030712;
             border: 1px solid var(--dark-blue);
             color: var(--neon-blue);
-            padding: 15px;
+            padding: 14px;
             border-radius: 10px;
             width: 95px;
             text-align: center;
@@ -356,12 +337,27 @@
             font-family: monospace;
             outline: none;
             transition: all 0.3s;
-            font-size: 18px;
+            font-size: 1.2rem;
         }
 
         input:focus {
             border-color: var(--neon-blue);
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+        }
+
+        .btn-manual {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: var(--text-muted);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 14px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            flex-grow: 1;
         }
 
         .error-msg {
@@ -445,7 +441,7 @@
         .footer-tech {
             font-size: 0.6rem;
             color: rgba(148, 163, 184, 0.2);
-            margin-top: 20px;
+            margin-top: 15px;
             text-transform: uppercase;
             font-family: monospace;
             text-align: center;
@@ -457,30 +453,22 @@
         }
 
         /* 🌟 ANIMACIONES PARA LA HUELLA DIGITAL 🌟 */
-        @keyframes pulseHuella {
-            0% { transform: scale(1); box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1); }
-            100% { transform: scale(1.08); box-shadow: 0 0 28px rgba(16, 185, 129, 0.8); background: rgba(16, 185, 129, 0.3); }
-        }
-        @keyframes pulseTextHuella {
-            0% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-        /* 🌟 ESTILOS PRO PARA EL ESCÁNER DE HUELLA 🌟 */
         .fingerprint-icon {
-    width: 120px;       /* Hazlo tan grande como quieras aquí */
-    height: 120px;
-    fill: #00ff9d;      /* Cambia esto al color exacto que quieras (ej: #00ff9d, #ffffff, etc) */
-    transition: fill 0.3s ease;
-}
+            width: 110px;      
+            height: 110px;
+            fill: #00ff9d;      
+            transition: fill 0.3s ease;
+        }
+        
         .fingerprint-container { 
             position: relative; 
-            width: 130px; 
-            height: 130px; 
+            width: 120px; 
+            height: 120px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             border: 2px dashed rgba(16, 185, 129, 0.4); 
-            border-radius: 50%; /* Ahora es un círculo perfecto */
+            border-radius: 50%; 
             background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(2, 6, 23, 0) 70%); 
             cursor: pointer; 
             overflow: hidden; 
@@ -491,7 +479,7 @@
             margin: 0 auto; 
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
         }
-        /* Anillo holográfico giratorio */
+        
         .fingerprint-container::before {
             content: '';
             position: absolute;
@@ -504,10 +492,12 @@
             opacity: 0.8;
             pointer-events: none;
         }
+        
         @keyframes spinHUD {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
         .fingerprint-container svg { 
             width: 65px; 
             height: 65px; 
@@ -517,7 +507,7 @@
             pointer-events: none; 
             filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.5));
         }
-        /* Láser más potente */
+        
         .scanner-laser-fp { 
             position: absolute; 
             top: -10px; 
@@ -530,24 +520,29 @@
             z-index: 5; 
             pointer-events: none; 
         }
+        
         .fingerprint-container.scanning-active { 
             background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, rgba(16, 185, 129, 0.05) 80%); 
             border-color: var(--cyber-green); 
             box-shadow: 0 0 40px rgba(16, 185, 129, 0.6), inset 0 0 25px rgba(16, 185, 129, 0.4); 
             transform: scale(0.95); 
         }
+        
         .fingerprint-container.scanning-active svg { 
             stroke: #ffffff; 
             filter: drop-shadow(0 0 10px var(--cyber-green)); 
         }
+        
         .fingerprint-container.scanning-active .scanner-laser-fp { 
             opacity: 1; 
             animation: scanFinger 1.2s ease-in-out infinite alternate; 
         }
+        
         @keyframes scanFinger { 
             0% { top: -5%; } 
             100% { top: 100%; } 
         }
+        
         @keyframes pulseTextHuella { 
             0% { opacity: 0.5; } 
             100% { opacity: 1; filter: drop-shadow(0 0 5px var(--cyber-green)); } 
@@ -569,17 +564,17 @@
 
 <div class="container" id="welcome-screen">
     <h1 style="font-size: 2.2rem; margin-bottom: 10px;">PROTOCOL 14</h1>
-    <div style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px; text-align: center; line-height: 1.5;">
+    <div style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px; text-align: center; line-height: 1.5;">
         Protocol de seguretat activat.<br><br>Benvingut a la teua missió d'aniversari.
     </div>
-    <button class="btn-camera-hud" onclick="iniciarJoc()" style="padding: 20px; font-size: 1.2rem; margin-bottom: 0;">INICIAR SISTEMA</button>
+    <button class="btn-camera-hud" onclick="iniciarJoc()" style="padding: 20px; font-size: 1.3rem; margin-bottom: 0;">INICIAR SISTEMA</button>
 </div>
 
 <div class="container" id="main-panel" style="display: none;">
     <div class="cyber-alert-screen" id="hacker-alert">
         <div class="alert-title">🟢 NIVELL SUPERAT 🟢</div>
         
-        <div style="margin-top: 25px; width: 100%;">
+        <div style="margin-top: 20px; width: 100%;">
         <div class="fingerprint-container" id="fp-btn" 
                  onmousedown="iniciarEscaneoHuella(event)" 
                  onmouseup="detenerEscaneoHuella(event)" 
@@ -592,9 +587,9 @@
 </svg>
                 <div class="scanner-laser-fp" id="fp-laser"></div>
             </div>
-            <div id="fp-text-status" style="margin-top: 15px; font-family: monospace; font-size: 0.8rem; color: var(--cyber-green); letter-spacing: 1px; text-transform: uppercase; font-weight: bold; line-height: 1.5; animation: pulseTextHuella 1s infinite alternate;">
+            <div id="fp-text-status" style="margin-top: 15px; font-family: monospace; font-size: 0.85rem; color: var(--cyber-green); letter-spacing: 1px; text-transform: uppercase; font-weight: bold; line-height: 1.5; animation: pulseTextHuella 1s infinite alternate;">
                 AUTENTICACIÓ BIOMÈTRICA REQUERIDA<br>
-                <span style="color: var(--text-muted); font-size: 0.7rem; font-weight: normal;">(MANTÍN PREMUT PER A ESCANEJAR)</span>
+                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: normal;">(MANTÍN PREMUT PER A ESCANEJAR)</span>
             </div>
         </div>
     </div>
@@ -616,7 +611,7 @@
         <span id="actual-text">Benvingut a la teua missió de 14 aniversari. Inicia el lector inferior per escanejar els QR o utilitza el codi manual.</span>
     </div>
 
-    <div class="hint-container">
+    <div class="hint-container" id="hint-area">
         <button id="hint-btn-trigger" class="btn-hint-trigger" onclick="revelarAjudaEncriptada()">⚡ SOL·LICITAR AJUDA PROTOCOL 14</button>
         <div id="hint-text-box" class="hint-text-box"></div>
     </div>
@@ -650,11 +645,10 @@
     let html5QrCode = null;
     let currentPistaId = null;
     let typingInterval = null;
-    let pistaPendienteId = null; // Variable global para guardar el nivel desbloqueado 
+    let pistaPendienteId = null;  
     let scanTimeoutId = null;
     let scanProgressInterval = null;
 
-    // 🌟 FUNCIÓN NUEVA PARA EMPEZAR EL JUEGO 🌟
     function iniciarJoc() {
         document.getElementById('welcome-screen').style.display = 'none';
         document.getElementById('main-panel').style.display = 'flex';
@@ -771,17 +765,21 @@
             if (html5QrCode) {
                 html5QrCode.stop().then(() => {
                     document.getElementById('camera-box-area').style.display = 'none';
+                    document.getElementById('hint-area').style.display = 'block';
                     gestionarBotonesVisibilidad();
                 }).catch(err => {
                     document.getElementById('camera-box-area').style.display = 'none';
+                    document.getElementById('hint-area').style.display = 'block';
                     gestionarBotonesVisibilidad();
                 });
             } else {
                 document.getElementById('camera-box-area').style.display = 'none';
+                document.getElementById('hint-area').style.display = 'block';
                 gestionarBotonesVisibilidad();
             }
         } catch(e) {
             document.getElementById('camera-box-area').style.display = 'none';
+            document.getElementById('hint-area').style.display = 'block';
             gestionarBotonesVisibilidad();
         }
     }
@@ -799,15 +797,11 @@
         }
     }
 
-    // 🌟 SE MODIFICA ESTA FUNCIÓN: YA NO TIENE TIEMPO AUTOMÁTICO 🌟
-
-
     function mostrarPista(id) {
         pistaPendienteId = id; 
         apagarCamaraAutomatica();
         document.getElementById('hint-text-box').style.display = 'none';
 
-        // Solo muestra la huella si no es la pantalla de inicio (Nivel 1)
         if(id > 1) {
             const alertScreen = document.getElementById('hacker-alert');
             alertScreen.style.display = 'flex';
@@ -842,7 +836,7 @@
                 document.getElementById('hacker-alert').style.display = 'none';
                 ejecutarCargaDePista();
             }, 300);
-        }, 1500); // 1.5 segundos pulsado
+        }, 1500); 
     }
 
     function detenerEscaneoHuella(e) {
@@ -855,7 +849,7 @@
         const textStatus = document.getElementById('fp-text-status');
 
         btn.classList.remove('scanning-active');
-        textStatus.innerHTML = "AUTENTICACIÓ BIOMÈTRICA REQUERIDA<br><span style='color: var(--text-muted); font-size: 0.7rem; font-weight: normal;'>(MANTÍN PREMUT PER A ESCANEJAR)</span>";
+        textStatus.innerHTML = "AUTENTICACIÓ BIOMÈTRICA REQUERIDA<br><span style='color: var(--text-muted); font-size: 0.75rem; font-weight: normal;'>(MANTÍN PREMUT PER A ESCANEJAR)</span>";
     }
 
     function ejecutarCargaDePista() {
@@ -878,7 +872,6 @@
         document.getElementById('victory-layout').style.display = 'flex';
     }
 
-    // 🌟 FUNCIÓN DE HASH ACTUALIZADA 🌟
     function comprovarHash() {
         const hash = window.location.hash;
         if (hash.includes('pista')) {
@@ -924,12 +917,14 @@
         .catch((err) => {
             alert("⚠️ Permís de càmera denegat. Entra via HTTPS.");
             document.getElementById('camera-box-area').style.display = 'none';
+            document.getElementById('hint-area').style.display = 'block';
             gestionarBotonesVisibilidad();
         });
     }
 
     function controlarLectorCuerpo() {
         document.getElementById('custom-camera-btn').style.display = 'none';
+        document.getElementById('hint-area').style.display = 'none'; /* Oculta la ayuda para dar espacio a la cámara */
         document.getElementById('camera-box-area').style.display = 'block';
         
         setTimeout(() => {
