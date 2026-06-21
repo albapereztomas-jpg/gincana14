@@ -33,7 +33,7 @@
             height: 100dvh;
             width: 100vw;
             margin: 0;
-            padding: 15px; 
+            padding: 35px 15px 15px 15px; /* Más margen arriba para que no corte el texto */
             overflow: hidden;
         }
 
@@ -69,7 +69,7 @@
             padding: 24px 15px 15px 15px;
             max-width: 420px;
             width: 100%;
-            max-height: 100%;
+            max-height: calc(100% - 20px); /* Da espacio real al cartel superior */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -175,11 +175,12 @@
         .alert-title {
             color: var(--cyber-green);
             font-family: monospace;
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 5vw, 1.5rem);
             font-weight: 900;
             letter-spacing: 2px;
             margin-bottom: 15px;
             animation: pulse-border 0.3s infinite alternate;
+            white-space: nowrap;
         }
 
         .hint-container {
